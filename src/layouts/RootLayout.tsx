@@ -14,12 +14,39 @@ const StickyNavbarWrapper = styled.div`
     position: sticky;
     top: 0;
     z-index: 999;
-    backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
+    backdrop-filter: none;
 `;
 
 const MainContent = styled.main`
     padding-top: 2px;
+`;
+
+const FooterElement = styled.footer`
+    font-family: ${({ theme }) => theme.fonts.main};
+    text-align: center;
+    padding: 1.2rem;
+    padding-bottom: 1.8rem;
+    font-size: 0.9rem;
+    color: #393737;
+    background: #fefeff;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: -17px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.07),
+            rgba(0, 0, 0, 0)
+        );
+        pointer-events: none;
+    }
 `;
 
 export default function RootLayout() {
@@ -33,6 +60,11 @@ export default function RootLayout() {
                     <MainContent>
                         <Outlet />
                     </MainContent>
+                    <FooterElement>
+                        © 2025 Lexium — Legal Case Management Platform. All
+                        rights reserved. Designed for law firms and legal
+                        professionals.
+                    </FooterElement>
                 </AppContainer>
             </ThemeProvider>
         </>
