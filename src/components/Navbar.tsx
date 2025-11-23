@@ -1,20 +1,49 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled, { css } from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
 import { Scale } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Navbar() {
+    const { user, loading, logout } = useAuth();
+    const navigate = useNavigate();
+
+    async function handleLogout() {
+        await logout();
+        navigate("/home");
+    }
+
     return (
         <NavbarContainer>
             <NavSection>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/public-cases">Public Cases</NavLink>
+                {user ? <NavLink to="/dashboard">Dashboard</NavLink> : ""}
             </NavSection>
+
             <ContainerCircle>
                 <Scale size={26} />
             </ContainerCircle>
+
             <NavSection>
-                <NavLink to="/login">Log In</NavLink>
-                <NavLink to="/register">Sign Up</NavLink>
+                {user ? (
+                    <>
+                        <NavLink to="/cases">Cases</NavLink>
+                        <NavLink to="/upcoming">Upcoming</NavLink>
+
+                        <NavButton
+                            type="button"
+                            disabled={loading}
+                            onClick={handleLogout}
+                        >
+                            Log Out
+                        </NavButton>
+                    </>
+                ) : (
+                    <>
+                        <NavLink to="/login">Log In</NavLink>
+                        <NavLink to="/register">Sign Up</NavLink>
+                    </>
+                )}
             </NavSection>
         </NavbarContainer>
     );
@@ -29,7 +58,7 @@ const NavbarContainer = styled.nav`
     align-items: center;
     justify-content: space-between;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(3px);
     border-radius: 45px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
     margin: 0 auto;
@@ -45,12 +74,16 @@ const NavSection = styled.div`
     align-items: center;
 `;
 
-const NavLink = styled(Link)`
+const navItemStyles = css`
     text-decoration: none;
     color: #1a1a1a;
     font-weight: 400;
     position: relative;
     padding: 8px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &::before {
@@ -77,6 +110,23 @@ const NavLink = styled(Link)`
     &:active {
         transform: scale(0.96);
     }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: default;
+
+        &::before {
+            transform: translateX(-50%) scaleX(0);
+        }
+    }
+`;
+
+const NavLink = styled(Link)`
+    ${navItemStyles}
+`;
+
+const NavButton = styled.button`
+    ${navItemStyles}
 `;
 
 const ContainerCircle = styled.div`
@@ -86,7 +136,7 @@ const ContainerCircle = styled.div`
     top: 7px;
     width: 55px;
     height: 55px;
-    background: linear-gradient(135deg, #3d5afe 0%, #5c7cff 100%);
+    background: linear-gradient(135deg, #3d70fe 0%, #5c7cff 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
