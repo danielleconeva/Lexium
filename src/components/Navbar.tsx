@@ -142,7 +142,6 @@ const ContainerCircle = styled.div`
     align-items: center;
     justify-content: center;
     color: white;
-    cursor: pointer;
     box-shadow: 0 6px 20px rgba(61, 90, 254, 0.35),
         0 2px 8px rgba(61, 90, 254, 0.2);
     transition: all 0.2s ease;
