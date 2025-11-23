@@ -21,6 +21,7 @@ const FormWrapper = styled.form`
     }
 
     button {
+        font-family: ${({ theme }) => theme.fonts.main};
         display: inline-block;
         padding: 1rem 2.5rem;
         font-size: 1.05rem;
@@ -104,21 +105,34 @@ const InputGroup = styled.div`
         border-radius: 2rem;
         font-size: 1rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background-color: #fdfeff;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 2px rgba(255, 255, 255, 0.5);
 
         &:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
-                0 2px 6px rgba(0, 0, 0, 0.1);
-            border-color: #bbb;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
+                0 4px 12px rgba(0, 0, 0, 0.08),
+                inset 0 1px 2px rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         &:focus {
             outline: none;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-color: ${({ theme }) => theme.colors.primaryBlue};
             box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primaryBlue}20,
-                0 6px 20px rgba(61, 90, 254, 0.15),
-                0 3px 10px rgba(102, 126, 234, 0.1);
+                0 12px 48px rgba(61, 90, 254, 0.2),
+                0 6px 20px rgba(102, 126, 234, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.7);
             transform: scale(1.01);
         }
     }
@@ -237,7 +251,7 @@ const IconCircle = styled.div`
 
 const BottomText = styled.p`
     text-align: center;
-    color: ${({ theme }) => theme.colors.textMuted};
+    color: #343232;
     transition: color 0.2s ease;
 
     &:hover {
@@ -333,7 +347,7 @@ export default function LoginForm() {
                     <Lock className="left-icon" size={18} />
                     <input
                         type={showPassword ? "text" : "password"}
-                        id={password}
+                        id="password"
                         placeholder="Enter your password"
                         value={password}
                         onBlur={(e) => handleBlur("password", e.target.value)}
