@@ -5,7 +5,14 @@ import {
     signInWithEmailAndPassword,
     signOut,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {
+    doc,
+    setDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+} from "firebase/firestore";
 import type { FirmUser } from "../../types/User";
 
 interface AuthState {
@@ -26,6 +33,17 @@ export const registerUser = createAsyncThunk<
     { rejectValue: string }
 >("auth/registerUser", async ({ email, password, firmName }, thunkAPI) => {
     try {
+        const firmsRef = collection(firestore, "firms");
+        const q = query(firmsRef, where("firmName", "==", firmName));
+
+        const existingFirms = await getDocs(q);
+
+        if (!existingFirms.empty) {
+            return thunkAPI.rejectWithValue(
+                "Company name is already registered."
+            );
+        }
+
         const userCredential = await createUserWithEmailAndPassword(
             auth,
             email,
@@ -84,6 +102,7 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+
             .addCase(registerUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;
