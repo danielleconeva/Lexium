@@ -9,11 +9,11 @@ export default function Navbar() {
 
     async function handleLogout() {
         await logout();
-        navigate("/home");
+        navigate("/");
     }
 
     return (
-        <NavbarContainer>
+        <NavbarContainer $hasUser={!!user}>
             <NavSection>
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/public-cases">Public Cases</NavLink>
@@ -29,7 +29,6 @@ export default function Navbar() {
                     <>
                         <NavLink to="/cases">Cases</NavLink>
                         <NavLink to="/upcoming">Upcoming</NavLink>
-
                         <NavButton
                             type="button"
                             disabled={loading}
@@ -49,7 +48,7 @@ export default function Navbar() {
     );
 }
 
-const NavbarContainer = styled.nav`
+const NavbarContainer = styled.nav<{ $hasUser: boolean }>`
     position: relative;
     top: 2rem;
     height: 70px;
@@ -62,10 +61,11 @@ const NavbarContainer = styled.nav`
     border-radius: 45px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
     margin: 0 auto;
-    max-width: 600px;
+    max-width: ${({ $hasUser }) => ($hasUser ? "900px" : "600px")};
     font-size: 1.06rem;
     color: #1a1a1a;
-    transition: box-shadow 0.3s ease;
+    transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s ease;
 `;
 
 const NavSection = styled.div`
