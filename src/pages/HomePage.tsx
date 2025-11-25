@@ -107,6 +107,7 @@ const PrimaryButton = styled(Link)`
     font-size: 1.05rem;
     font-weight: 500;
     color: white;
+    margin: 0 auto;
     background: linear-gradient(135deg, #3d70fe 0%, #667eea 100%);
     border: none;
     border-radius: 50px;
@@ -119,17 +120,39 @@ const PrimaryButton = styled(Link)`
         inset 0 2px 8px rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transition: left 0.5s;
+    }
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(61, 90, 254, 0.4),
-            0 6px 16px rgba(102, 126, 234, 0.3),
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 16px 40px rgba(61, 90, 254, 0.5),
+            0 8px 20px rgba(102, 126, 234, 0.4),
             inset 0 -2px 8px rgba(0, 0, 0, 0.1),
             inset 0 2px 8px rgba(255, 255, 255, 0.3);
     }
 
+    &:hover::before {
+        left: 100%;
+    }
+
     &:active {
-        transform: translateY(0);
+        transform: translateY(-1px) scale(1.01);
     }
 `;
 
@@ -137,26 +160,58 @@ const SecondaryButton = styled(Link)`
     display: inline-block;
     padding: 1rem 2.5rem;
     font-size: 1.05rem;
-    font-weight: 400;
-    color: #717070;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(61, 90, 254, 0.2);
+    font-weight: 500;
+    color: #4a4a4f;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     cursor: pointer;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04),
+        inset 0 1px 2px rgba(255, 255, 255, 0.5),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transition: left 0.5s;
+    }
 
     &:hover {
-        background: rgba(255, 255, 255, 1);
-        border-color: rgba(61, 90, 254, 0.1);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(37, 37, 37, 0.06);
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        color: #2a2a2f;
+        transform: translateY(-3px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
+            0 6px 20px rgba(0, 0, 0, 0.06),
+            inset 0 1px 3px rgba(255, 255, 255, 0.6),
+            inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    &:hover::before {
+        left: 100%;
     }
 
     &:active {
-        transform: translateY(0);
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.2);
     }
 `;
 
