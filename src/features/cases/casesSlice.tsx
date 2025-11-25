@@ -11,6 +11,7 @@ import {
     where,
 } from "firebase/firestore";
 import type { CaseRecord } from "../../types/Case";
+import { mapDocumentToCaseRecord } from "./casesMappers";
 
 interface CasesState {
     firmCases: CaseRecord[];
@@ -39,12 +40,11 @@ export const fetchFirmCases = createAsyncThunk<
 
         const snapshot = await getDocs(casesQuery);
 
-        return snapshot.docs.map((document) => ({
-            id: document.id,
-            ...document.data(),
-        })) as CaseRecord[];
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.message);
+        return snapshot.docs.map(mapDocumentToCaseRecord);
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Unknown error";
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -61,12 +61,11 @@ export const fetchPublicCases = createAsyncThunk<
 
         const snapshot = await getDocs(casesQuery);
 
-        return snapshot.docs.map((document) => ({
-            id: document.id,
-            ...document.data(),
-        })) as CaseRecord[];
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.message);
+        return snapshot.docs.map(mapDocumentToCaseRecord);
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Unknown error";
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -82,8 +81,10 @@ export const createCase = createAsyncThunk<
         );
 
         return { id: createdDocument.id, ...caseData };
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Unknown error";
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -97,8 +98,10 @@ export const updateCase = createAsyncThunk<
         await updateDoc(caseRef, payload.updatedData);
 
         return payload;
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Unknown error";
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -110,8 +113,10 @@ export const deleteCase = createAsyncThunk<
     try {
         await deleteDoc(doc(firestore, "cases", caseId));
         return caseId;
-    } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+        const message =
+            error instanceof Error ? error.message : "Unknown error";
+        return thunkAPI.rejectWithValue(message);
     }
 });
 
@@ -121,9 +126,9 @@ const casesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-
             .addCase(fetchFirmCases.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(fetchFirmCases.fulfilled, (state, action) => {
                 state.loading = false;
@@ -134,8 +139,17 @@ const casesSlice = createSlice({
                 state.error = action.payload || "Failed to load firm cases.";
             })
 
+            .addCase(fetchPublicCases.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(fetchPublicCases.fulfilled, (state, action) => {
+                state.loading = false;
                 state.publicCases = action.payload;
+            })
+            .addCase(fetchPublicCases.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to load public cases.";
             })
 
             .addCase(createCase.fulfilled, (state, action) => {
