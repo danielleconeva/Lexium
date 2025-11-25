@@ -1,9 +1,9 @@
 export const theme = {
     colors: {
-        primary: "#3d50feff",
-        textDark: "#0A0A0C",
+        primaryBlue: "#3d70fe",
+        primaryPurple: "rgba(80, 80, 180, 1)",
         text: "#1E1E24",
-        textMuted: "#80808D",
+        textMuted: "#666669ff",
     },
 
     fonts: {
