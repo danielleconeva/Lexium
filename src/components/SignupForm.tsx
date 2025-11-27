@@ -296,9 +296,6 @@ export default function SignupForm() {
         rePassword: false,
     });
 
-    // ------------------------------
-    // VALIDATION
-    // ------------------------------
     function validateField(field: keyof SignupValues, value: string) {
         let error = "";
 
@@ -381,7 +378,7 @@ export default function SignupForm() {
             rePassword: trimmedRePassword,
         });
 
-        await register(trimmedFirmName, trimmedEmail, trimmedPassword);
+        await register(trimmedEmail, trimmedPassword, trimmedFirmName);
     }
 
     return (
