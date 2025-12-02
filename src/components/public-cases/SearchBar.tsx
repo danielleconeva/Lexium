@@ -35,12 +35,13 @@ const SearchIcon = styled(Search)`
 `;
 
 const Bar = styled.input`
+    font-family: ${({ theme }) => theme.fonts.main};
     flex: 1;
     min-width: 0;
     border: none;
     outline: none;
     background: transparent;
-    font-size: 1.125rem;
+    font-size: 1.1rem;
     color: #334155;
 
     &::placeholder {
@@ -49,6 +50,7 @@ const Bar = styled.input`
 `;
 
 const SearchButton = styled.button`
+    font-family: ${({ theme }) => theme.fonts.main};
     border: none;
     background: #3b82f6;
     color: white;
@@ -57,7 +59,7 @@ const SearchButton = styled.button`
     align-items: center;
     justify-content: center;
     padding: 1rem 2.5rem;
-    font-size: 1.125rem;
+    font-size: 1.1rem;
     font-weight: 500;
     white-space: nowrap;
     flex-shrink: 0;
