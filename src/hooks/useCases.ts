@@ -9,6 +9,7 @@ import {
     updateCase,
     deleteCase,
 } from "../features/cases/casesSlice";
+import type { CaseRecord } from "../types/Case";
 
 export function useCases() {
     const dispatch = useDispatch<AppDispatch>();
@@ -49,6 +50,28 @@ export function useCases() {
         [dispatch]
     );
 
+    const getPublicCaseById = useCallback(
+        (caseId: string): CaseRecord | null => {
+            const matchingCaseRecord = publicCases.find(
+                (caseRecord) => caseRecord.id === caseId
+            );
+
+            return matchingCaseRecord ?? null;
+        },
+        [publicCases]
+    );
+
+    const getFirmCaseById = useCallback(
+        (caseId: string): CaseRecord | null => {
+            const matchingCaseRecord = firmCases.find(
+                (caseRecord) => caseRecord.id === caseId
+            );
+
+            return matchingCaseRecord ?? null;
+        },
+        [firmCases]
+    );
+
     return {
         firmCases,
         publicCases,
@@ -59,5 +82,7 @@ export function useCases() {
         createCase: createCaseHandler,
         updateCase: updateCaseHandler,
         deleteCase: deleteCaseHandler,
+        getPublicCaseById,
+        getFirmCaseById,
     };
 }
