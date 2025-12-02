@@ -11,6 +11,7 @@ import {
     where,
 } from "firebase/firestore";
 import type { CaseRecord } from "../../types/Case";
+import type { FirmUser } from "../../types/User";
 import { mapDocumentToCaseRecord } from "./casesMappers";
 
 interface CasesState {
@@ -71,16 +72,32 @@ export const fetchPublicCases = createAsyncThunk<
 
 export const createCase = createAsyncThunk<
     CaseRecord,
-    Omit<CaseRecord, "id">,
+    {
+        caseData: Omit<CaseRecord, "id" | "firmId" | "firmName">;
+        firmUser: FirmUser;
+    },
     { rejectValue: string }
->("cases/createCase", async (caseData, thunkAPI) => {
+>("cases/createCase", async ({ caseData, firmUser }, thunkAPI) => {
     try {
+        const now = Date.now();
+
+        const caseToSave: Omit<CaseRecord, "id"> = {
+            ...caseData,
+            firmId: firmUser.uid,
+            firmName: firmUser.firmName,
+            createdAt: caseData.createdAt ?? now,
+            updatedAt: caseData.updatedAt ?? now,
+        };
+
         const createdDocument = await addDoc(
             collection(firestore, "cases"),
-            caseData
+            caseToSave
         );
 
-        return { id: createdDocument.id, ...caseData };
+        return {
+            id: createdDocument.id,
+            ...caseToSave,
+        };
     } catch (error: unknown) {
         const message =
             error instanceof Error ? error.message : "Unknown error";

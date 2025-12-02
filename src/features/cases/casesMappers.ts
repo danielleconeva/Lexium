@@ -64,10 +64,12 @@ export function mapDocumentToCaseRecord(
 
     const {
         firmId,
+        firmName,
         caseNumber,
         caseYear,
         type,
         court,
+        formation,
         status,
         clientName,
         notes,
@@ -85,11 +87,13 @@ export function mapDocumentToCaseRecord(
     return {
         id: document.id,
         firmId: String(firmId),
+        firmName: typeof firmName === "string" ? firmName : undefined,
 
         caseNumber: String(caseNumber),
         caseYear: String(caseYear),
         type: String(type),
         court: String(court),
+        formation: String(formation),
         status: String(status),
 
         clientName: String(clientName),

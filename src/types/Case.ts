@@ -1,11 +1,13 @@
 export interface CaseRecord {
     id: string;
     firmId: string;
+    firmName?: string;
 
     caseNumber: string;
     caseYear: string;
     type: string;
     court: string;
+    formation: string;
     status: string;
 
     clientName: string;
