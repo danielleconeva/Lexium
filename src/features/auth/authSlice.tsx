@@ -23,7 +23,7 @@ interface AuthState {
 
 const initialState: AuthState = {
     user: null,
-    loading: false,
+    loading: true,
     error: null,
 };
 
@@ -98,6 +98,10 @@ const authSlice = createSlice({
     reducers: {
         setUser(state, action) {
             state.user = action.payload;
+            state.loading = false;
+        },
+        setLoading(state, action) {
+            state.loading = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -135,5 +139,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, setLoading } = authSlice.actions;
 export default authSlice.reducer;
