@@ -520,7 +520,7 @@ export default function HomePage() {
                         Log In
                         <Zap size={18} />
                     </PrimaryButton>
-                    <SecondaryButton to="public-cases">
+                    <SecondaryButton to="/public-cases">
                         View Public Cases
                     </SecondaryButton>
                 </ButtonGroup>

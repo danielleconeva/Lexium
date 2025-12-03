@@ -11,6 +11,7 @@ export interface CaseRecord {
     status: string;
 
     clientName: string;
+    opposingParty: string;
     notes?: string;
     nextHearingDate?: string;
 
