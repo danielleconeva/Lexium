@@ -71,8 +71,10 @@ export function mapDocumentToCaseRecord(
         court,
         formation,
         status,
+        isStarred,
         clientName,
         opposingParty,
+
         notes,
         nextHearingDate,
         isPublic,
@@ -96,7 +98,7 @@ export function mapDocumentToCaseRecord(
         court: String(court),
         formation: String(formation),
         status: String(status),
-
+        isStarred: Boolean(isStarred),
         clientName: String(clientName),
         opposingParty: String(opposingParty),
         notes: typeof notes === "string" ? notes : undefined,
