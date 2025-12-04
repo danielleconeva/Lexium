@@ -9,6 +9,7 @@ export interface CaseRecord {
     court: string;
     formation: string;
     status: string;
+    isStarred: boolean;
 
     clientName: string;
     opposingParty: string;
