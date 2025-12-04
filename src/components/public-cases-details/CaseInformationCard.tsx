@@ -20,8 +20,8 @@ const CardHeader = styled.div`
 `;
 
 const HeaderIcon = styled.div`
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     border-radius: 0.5rem;
     background: #eef4ff;
     display: flex;
