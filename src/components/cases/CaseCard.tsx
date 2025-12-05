@@ -234,11 +234,23 @@ export default function CaseCard({ caseData, onStarToggle }: CaseCardProps) {
         navigate(`/cases/${caseData.id}`);
     };
 
+    function formatType(type: string) {
+        return type
+            .split("-")
+            .map(
+                (word) =>
+                    word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            )
+            .join("-");
+    }
+
     return (
         <CardWrapper>
             <CardHeader>
                 <HeaderLeft>
-                    <TypeBadge $type={caseData.type}>{caseData.type}</TypeBadge>
+                    <TypeBadge $type={caseData.type}>
+                        {formatType(caseData.type)}
+                    </TypeBadge>
                     <CaseNumberRow>
                         <CaseNumber>
                             {caseData.caseNumber}/{caseData.caseYear}
@@ -250,7 +262,7 @@ export default function CaseCard({ caseData, onStarToggle }: CaseCardProps) {
                     </CaseNumberRow>
                 </HeaderLeft>
                 <StatusBadge $status={caseData.status}>
-                    {caseData.status}
+                    {formatType(caseData.status)}
                 </StatusBadge>
             </CardHeader>
 
