@@ -24,11 +24,9 @@ export default function TaskProgressCard({
                 <Percent>{completionRate}% completed</Percent>
             </HeaderRow>
             <Divider />
-
             <ProgressBarWrapper>
-                <ProgressFill />
+                <ProgressFill $completionRate={completionRate} />
             </ProgressBarWrapper>
-
             <FooterRow>
                 <span>{totalTasks - pendingTasks} done</span>
                 <span>{pendingTasks} remaining</span>
@@ -90,11 +88,12 @@ const ProgressBarWrapper = styled.div`
     margin-bottom: 1rem;
 `;
 
-const ProgressFill = styled.div`
-    width: 13%;
+const ProgressFill = styled.div<{ $completionRate: number }>`
+    width: ${(props) => props.$completionRate}%;
     height: 100%;
     background: #5897fc;
     opacity: 0.6;
+    transition: width 0.3s ease;
 `;
 
 const FooterRow = styled.div`
