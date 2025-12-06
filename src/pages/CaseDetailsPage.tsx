@@ -46,15 +46,24 @@ export default function CaseDetailsPage() {
         loadFirmCases,
         getFirmCaseById,
     } = useCases();
+
     const { caseTasks, loadCaseTasks } = useTasks();
     const { user } = useAuth();
+
+    useEffect(() => {
+        console.log("CaseDetailsPage mounted");
+
+        if (caseIdFromParams) {
+            loadCaseTasks(caseIdFromParams);
+        }
+    }, []);
 
     useEffect(() => {
         const hasNoFirmCasesLoaded = !firmCases || firmCases.length === 0;
         if (!user) return;
 
         if (hasNoFirmCasesLoaded) {
-            loadFirmCases(user?.uid);
+            loadFirmCases(user.uid);
         }
     }, [user, firmCases, loadFirmCases]);
 
@@ -74,19 +83,18 @@ export default function CaseDetailsPage() {
     function handleArchive(id: string) {
         const caseItem = getFirmCaseById(id);
         const newStatus = caseItem?.status === "archived" ? "open" : "archived";
-
         updateCase(id, { status: newStatus });
     }
 
     function handleTogglePrivate(id: string) {
         const caseItem = getFirmCaseById(id);
-        const newIsPublic = caseItem?.isPublic === true ? false : true;
+        const newIsPublic = caseItem?.isPublic ? false : true;
         updateCase(id, { isPublic: newIsPublic });
     }
 
     function handleToggleStar(id: string) {
         const caseItem = getFirmCaseById(id);
-        const newIsStarred = caseItem?.isStarred === true ? false : true;
+        const newIsStarred = caseItem?.isStarred ? false : true;
         updateCase(id, { isStarred: newIsStarred });
     }
 
@@ -150,17 +158,20 @@ export default function CaseDetailsPage() {
                     Back to Cases
                 </BackButton>
                 <Heading>Case Details</Heading>
+
                 <IntroductionCard
                     caseData={caseData}
                     onEdit={handleEdit}
                     onArchive={handleArchive}
                     onDelete={handleDelete}
                 />
+
                 <MainContentWrapper>
                     <LeftColumn>
                         <InformationCard caseData={caseData} />
                         <TasksCard tasksData={caseTasks} caseId={caseData.id} />
                     </LeftColumn>
+
                     <RightColumn>
                         <NextHearingCard nextHearing={nextHearingComputed} />
 
