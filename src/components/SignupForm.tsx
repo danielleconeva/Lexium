@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../features/notifications/notificationsSlice";
+import type { AppDispatch } from "../store/store";
 
 const FormWrapper = styled.form`
     font-family: ${({ theme }) => theme.fonts.main};
@@ -274,7 +277,8 @@ export type SignupTouched = {
 export type SignupErrors = Partial<SignupValues>;
 
 export default function SignupForm() {
-    const { loading, error, register } = useAuth();
+    const { loading, register } = useAuth();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [values, setValues] = useState<SignupValues>({
         firmName: "",
@@ -378,7 +382,23 @@ export default function SignupForm() {
             rePassword: trimmedRePassword,
         });
 
-        await register(trimmedEmail, trimmedPassword, trimmedFirmName);
+        try {
+            await register(trimmedEmail, trimmedPassword, trimmedFirmName);
+
+            dispatch(
+                showNotification({
+                    type: "success",
+                    message: "Account created successfully!",
+                })
+            );
+        } catch (err: any) {
+            dispatch(
+                showNotification({
+                    type: "error",
+                    message: err?.message || "Registration failed.",
+                })
+            );
+        }
     }
 
     return (

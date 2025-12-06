@@ -1,8 +1,11 @@
 import { Mail, Lock, Eye, EyeOff, Building2 } from "lucide-react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, type FormEvent } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../features/notifications/notificationsSlice";
+import type { AppDispatch } from "../store/store";
 
 const FormWrapper = styled.form`
     font-family: ${({ theme }) => theme.fonts.main};
@@ -265,6 +268,8 @@ export type LoginErrors = Partial<LoginValues>;
 
 export default function LoginForm() {
     const { loading, login } = useAuth();
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -302,8 +307,9 @@ export default function LoginForm() {
         setShowPassword((prev) => !prev);
     }
 
-    function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
+
         setTouched({ email: true, password: true });
 
         if (!email || !password) {
@@ -314,72 +320,86 @@ export default function LoginForm() {
             return;
         }
 
-        if (errors.email || errors.password) {
-            return;
-        }
+        if (errors.email || errors.password) return;
 
-        login(email, password);
+        try {
+            await login(email, password);
+
+            dispatch(
+                showNotification({
+                    type: "success",
+                    message: "Logged in successfully!",
+                })
+            );
+
+            navigate("/dashboard");
+        } catch (err: any) {
+            dispatch(
+                showNotification({
+                    type: "error",
+                    message: err?.message || "Invalid email or password",
+                })
+            );
+        }
     }
 
     return (
-        <>
-            <FormWrapper onSubmit={handleSubmit}>
-                <IconCircle>
-                    <Building2 strokeWidth={1.2} />
-                </IconCircle>
+        <FormWrapper onSubmit={handleSubmit}>
+            <IconCircle>
+                <Building2 strokeWidth={1.2} />
+            </IconCircle>
 
-                <InputGroup>
-                    <Mail className="left-icon" size={18} />
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        placeholder="Enter your email"
-                        onBlur={(e) => handleBlur("email", e.target.value)}
-                        onChange={(e) => handleChange("email", e.target.value)}
-                    />
-                </InputGroup>
-                {touched.email && errors.email && (
-                    <ValidationError>{errors.email}</ValidationError>
-                )}
+            <InputGroup>
+                <Mail className="left-icon" size={18} />
+                <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    placeholder="Enter your email"
+                    onBlur={(e) => handleBlur("email", e.target.value)}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                />
+            </InputGroup>
+            {touched.email && errors.email && (
+                <ValidationError>{errors.email}</ValidationError>
+            )}
 
-                <InputGroup>
-                    <Lock className="left-icon" size={18} />
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onBlur={(e) => handleBlur("password", e.target.value)}
-                        onChange={(e) =>
-                            handleChange("password", e.target.value)
-                        }
+            <InputGroup>
+                <Lock className="left-icon" size={18} />
+                <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onBlur={(e) => handleBlur("password", e.target.value)}
+                    onChange={(e) => handleChange("password", e.target.value)}
+                />
+                {showPassword ? (
+                    <EyeOff
+                        className="right-icon"
+                        size={18}
+                        onClick={toggleShowPassword}
                     />
-                    {showPassword ? (
-                        <EyeOff
-                            className="right-icon"
-                            size={18}
-                            onClick={toggleShowPassword}
-                        />
-                    ) : (
-                        <Eye
-                            className="right-icon"
-                            size={18}
-                            onClick={toggleShowPassword}
-                        />
-                    )}
-                </InputGroup>
-                {touched.password && errors.password && (
-                    <ValidationError>{errors.password}</ValidationError>
+                ) : (
+                    <Eye
+                        className="right-icon"
+                        size={18}
+                        onClick={toggleShowPassword}
+                    />
                 )}
-                <button type="submit" disabled={loading}>
-                    {loading ? "Loading.." : "Log In"}
-                </button>
-                <BottomText>
-                    Don't have an account?{" "}
-                    <SignupLink to="/register">Sign Up</SignupLink>
-                </BottomText>
-            </FormWrapper>
-        </>
+            </InputGroup>
+            {touched.password && errors.password && (
+                <ValidationError>{errors.password}</ValidationError>
+            )}
+
+            <button type="submit" disabled={loading}>
+                {loading ? "Loading.." : "Log In"}
+            </button>
+
+            <BottomText>
+                Don't have an account?{" "}
+                <SignupLink to="/register">Sign Up</SignupLink>
+            </BottomText>
+        </FormWrapper>
     );
 }

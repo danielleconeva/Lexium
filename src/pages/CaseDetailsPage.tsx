@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useCases } from "../hooks/useCases";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import IntroductionCard from "../components/case-details/IntroductionCard";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import TasksCard from "../components/case-details/TasksCard";
 import NextHearingCard from "../components/case-details/NextHearingCard";
 import QuickActionsCard from "../components/case-details/QuickActionsCard";
 import { useTasks } from "../hooks/useTasks";
+import ConfirmModal from "../components/ConfirmModal";
 
 function computeNextHearing(hearings?: Array<{ date: string; time: string }>) {
     if (!hearings || hearings.length === 0) return undefined;
@@ -49,6 +50,8 @@ export default function CaseDetailsPage() {
 
     const { caseTasks, loadCaseTasks } = useTasks();
     const { user } = useAuth();
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     useEffect(() => {
         console.log("CaseDetailsPage mounted");
@@ -98,8 +101,15 @@ export default function CaseDetailsPage() {
         updateCase(id, { isStarred: newIsStarred });
     }
 
-    function handleDelete(id: string) {
-        deleteCase(id);
+    function handleDelete(_id: string) {
+        setShowDeleteModal(true);
+    }
+
+    async function handleConfirmDelete() {
+        if (!caseIdFromParams) return;
+        await deleteCase(caseIdFromParams);
+        setShowDeleteModal(false);
+        navigate("/cases");
     }
 
     if (!caseIdFromParams) {
@@ -185,6 +195,17 @@ export default function CaseDetailsPage() {
                     </RightColumn>
                 </MainContentWrapper>
             </PageWrapper>
+
+            {showDeleteModal && (
+                <ConfirmModal
+                    title="Delete case"
+                    message="Are you sure you want to delete this case?"
+                    confirmLabel="Delete"
+                    cancelLabel="Cancel"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={() => setShowDeleteModal(false)}
+                />
+            )}
         </>
     );
 }

@@ -1,54 +1,74 @@
+import { useState } from "react";
 import styled, { css } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { Scale } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
+import ConfirmModal from "./ConfirmModal";
 
 export default function Navbar() {
     const { user, loading, logout } = useAuth();
     const navigate = useNavigate();
 
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+
     async function handleLogout() {
         await logout();
         navigate("/");
+        setShowLogoutModal(false);
     }
 
     return (
-        <NavbarContainer $hasUser={!!user}>
-            <LeftSection $hasUser={!!user}>
-                <NavLink to="/">Home</NavLink>
+        <>
+            <NavbarContainer $hasUser={!!user}>
+                <LeftSection $hasUser={!!user}>
+                    <NavLink to="/">Home</NavLink>
 
-                {user && <NavLink to="/dashboard">Dashboard</NavLink>}
-                {user && <NavLink to="/cases">Cases</NavLink>}
+                    {user && <NavLink to="/dashboard">Dashboard</NavLink>}
+                    {user && <NavLink to="/cases">Cases</NavLink>}
 
-                {!user && <NavLink to="/public-cases">Public Cases</NavLink>}
-            </LeftSection>
-
-            <CenterCircle $hasUser={!!user}>
-                <Scale size={26} />
-            </CenterCircle>
-
-            <RightSection $hasUser={!!user}>
-                {user ? (
-                    <>
+                    {!user && (
                         <NavLink to="/public-cases">Public Cases</NavLink>
-                        <NavLink to="/upcoming">Upcoming</NavLink>
+                    )}
+                </LeftSection>
 
-                        <NavButton
-                            type="button"
-                            disabled={loading}
-                            onClick={handleLogout}
-                        >
-                            Log Out
-                        </NavButton>
-                    </>
-                ) : (
-                    <>
-                        <NavLink to="/login">Log In</NavLink>
-                        <NavLink to="/register">Sign Up</NavLink>
-                    </>
-                )}
-            </RightSection>
-        </NavbarContainer>
+                <CenterCircle $hasUser={!!user}>
+                    <Scale size={26} />
+                </CenterCircle>
+
+                <RightSection $hasUser={!!user}>
+                    {user ? (
+                        <>
+                            <NavLink to="/public-cases">Public Cases</NavLink>
+                            <NavLink to="/upcoming">Upcoming</NavLink>
+
+                            <NavButton
+                                type="button"
+                                disabled={loading}
+                                onClick={() => setShowLogoutModal(true)}
+                            >
+                                Log Out
+                            </NavButton>
+                        </>
+                    ) : (
+                        <>
+                            <NavLink to="/login">Log In</NavLink>
+                            <NavLink to="/register">Sign Up</NavLink>
+                        </>
+                    )}
+                </RightSection>
+            </NavbarContainer>
+
+            {showLogoutModal && (
+                <ConfirmModal
+                    title="Log Out?"
+                    message="Are you sure you want to log out of your account?"
+                    confirmLabel="Log Out"
+                    cancelLabel="Cancel"
+                    onConfirm={handleLogout}
+                    onCancel={() => setShowLogoutModal(false)}
+                />
+            )}
+        </>
     );
 }
 

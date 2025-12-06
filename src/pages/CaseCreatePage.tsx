@@ -2,20 +2,22 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Star } from "lucide-react";
 import { useState, useMemo } from "react";
-
 import CaseIdentificationCard from "../components/create-case/CaseIdentificationCard";
 import CaseDetailsCard from "../components/create-case/CaseDetailsCard";
 import PartiesInvolvedCard from "../components/create-case/PartiesInvolvedCard";
 import ImportantDatesCard from "../components/create-case/ImportantDatesCard";
 import NotesAndDescriptionCard from "../components/create-case/NotesAndDescriptionCard";
-
 import { useCases } from "../hooks/useCases";
 import { useAuth } from "../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../features/notifications/notificationsSlice";
+import type { AppDispatch } from "../store/store";
 
 export default function CaseCreatePage() {
     const navigate = useNavigate();
     const { createCase } = useCases();
     const { user } = useAuth();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [isPublic, setIsPublic] = useState(false);
     const [isStarred, setIsStarred] = useState(false);
@@ -134,8 +136,25 @@ export default function CaseCreatePage() {
             },
         };
 
-        await createCase(payload);
-        navigate("/cases");
+        try {
+            await createCase(payload);
+
+            dispatch(
+                showNotification({
+                    type: "success",
+                    message: "Case created successfully!",
+                })
+            );
+
+            navigate("/cases");
+        } catch (err: any) {
+            dispatch(
+                showNotification({
+                    type: "error",
+                    message: err?.message || "Failed to create case.",
+                })
+            );
+        }
     }
 
     return (

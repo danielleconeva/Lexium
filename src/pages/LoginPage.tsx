@@ -104,7 +104,6 @@ const RightSubtitle = styled.p`
 export default function LoginPage() {
     const { user } = useAuth();
     const navigate = useNavigate();
-
     useEffect(() => {
         if (user) navigate("/dashboard");
     }, [user]);

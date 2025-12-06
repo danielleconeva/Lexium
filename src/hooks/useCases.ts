@@ -20,7 +20,9 @@ export function useCases() {
     );
 
     const loadFirmCases = useCallback(
-        (firmId: string) => dispatch(fetchFirmCases(firmId)),
+        (firmId: string) => {
+            return dispatch(fetchFirmCases(firmId));
+        },
         [dispatch]
     );
 
@@ -29,25 +31,30 @@ export function useCases() {
         [dispatch]
     );
 
+
     const createCaseHandler = useCallback(
-        (caseData: any) => {
-            console.log("📌 createCaseHandler received:", caseData);
-            return dispatch(createCaseThunk(caseData));
+        async (caseData: any) => {
+            return await dispatch(createCaseThunk(caseData)).unwrap();
         },
         [dispatch]
     );
 
     const updateCaseHandler = useCallback(
-        (caseId: string, updatedData: any) => {
-            return dispatch(updateCase({ caseId, updatedData }));
+        async (caseId: string, updatedData: any) => {
+            return await dispatch(
+                updateCase({ caseId, updatedData })
+            ).unwrap();
         },
         [dispatch]
     );
 
     const deleteCaseHandler = useCallback(
-        (caseId: string) => dispatch(deleteCase(caseId)),
+        async (caseId: string) => {
+            return await dispatch(deleteCase(caseId)).unwrap();
+        },
         [dispatch]
     );
+
 
     const getPublicCaseById = useCallback(
         (caseId: string): CaseRecord | null => {

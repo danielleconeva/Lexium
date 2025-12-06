@@ -27,19 +27,27 @@ export function useTasks() {
         [dispatch]
     );
 
+
     const createTaskHandler = useCallback(
-        (taskData: any) => dispatch(createTask(taskData)),
+        async (taskData: any) => {
+            return await dispatch(createTask(taskData)).unwrap();
+        },
         [dispatch]
     );
 
     const updateTaskHandler = useCallback(
-        (taskId: string, updatedData: any) =>
-            dispatch(updateTask({ taskId, updatedData })),
+        async (taskId: string, updatedData: any) => {
+            return await dispatch(
+                updateTask({ taskId, updatedData })
+            ).unwrap();
+        },
         [dispatch]
     );
 
     const deleteTaskHandler = useCallback(
-        (taskId: string) => dispatch(deleteTask(taskId)),
+        async (taskId: string) => {
+            return await dispatch(deleteTask(taskId)).unwrap();
+        },
         [dispatch]
     );
 
@@ -50,6 +58,7 @@ export function useTasks() {
         error,
         loadCaseTasks,
         loadFirmTasks,
+
         createTask: createTaskHandler,
         updateTask: updateTaskHandler,
         deleteTask: deleteTaskHandler,

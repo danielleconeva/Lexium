@@ -1,7 +1,9 @@
+import { useState } from "react";
 import styled from "styled-components";
 import { Pencil, Trash2, Calendar } from "lucide-react";
 import type { TaskRecord } from "../../types/Task";
 import { useTasks } from "../../hooks/useTasks";
+import ConfirmModal from "../ConfirmModal";
 
 type Props = {
     task: TaskRecord;
@@ -10,33 +12,52 @@ type Props = {
 
 export default function TaskCard({ task, onEdit }: Props) {
     const { deleteTask } = useTasks();
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    function handleConfirmDelete() {
+        deleteTask(task.id);
+        setShowDeleteModal(false);
+    }
 
     return (
-        <Card>
-            <TopSection>
-                <Title>{task.title}</Title>
-            </TopSection>
+        <>
+            <Card>
+                <TopSection>
+                    <Title>{task.title}</Title>
+                </TopSection>
 
-            <BottomSection>
-                {task.dueDate && (
-                    <DateTag>
-                        <Calendar size={13} strokeWidth={2.5} />
-                        <DateText>{task.dueDate}</DateText>
-                    </DateTag>
-                )}
-                <ActionButtons>
-                    <ActionBtn onClick={onEdit} variant="edit">
-                        <Pencil size={14} strokeWidth={2.5} />
-                    </ActionBtn>
-                    <ActionBtn
-                        onClick={() => deleteTask(task.id)}
-                        variant="delete"
-                    >
-                        <Trash2 size={14} strokeWidth={2.5} />
-                    </ActionBtn>
-                </ActionButtons>
-            </BottomSection>
-        </Card>
+                <BottomSection>
+                    {task.dueDate && (
+                        <DateTag>
+                            <Calendar size={13} strokeWidth={2.5} />
+                            <DateText>{task.dueDate}</DateText>
+                        </DateTag>
+                    )}
+                    <ActionButtons>
+                        <ActionBtn onClick={onEdit} variant="edit">
+                            <Pencil size={14} strokeWidth={2.5} />
+                        </ActionBtn>
+                        <ActionBtn
+                            onClick={() => setShowDeleteModal(true)}
+                            variant="delete"
+                        >
+                            <Trash2 size={14} strokeWidth={2.5} />
+                        </ActionBtn>
+                    </ActionButtons>
+                </BottomSection>
+            </Card>
+
+            {showDeleteModal && (
+                <ConfirmModal
+                    title="Delete task"
+                    message="Are you sure you want to delete this task?"
+                    confirmLabel="Delete"
+                    cancelLabel="Cancel"
+                    onConfirm={handleConfirmDelete}
+                    onCancel={() => setShowDeleteModal(false)}
+                />
+            )}
+        </>
     );
 }
 

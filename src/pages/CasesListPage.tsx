@@ -161,26 +161,34 @@ const LoadMoreWrapper = styled.div`
 `;
 
 const LoadMoreButton = styled.button`
-    padding: 0.75rem 2.5rem;
+    font-family: ${({ theme }) => theme.fonts.main};
+    padding: 0.9rem 2.3rem;
     border-radius: 999px;
-    border: 1px solid #3b82f6;
-    background: white;
-    color: #1d4ed8;
-    font-size: 0.95rem;
-    font-weight: 600;
+    border: 1px solid #3d70fe;
+    background: #ffffff;
+    color: #3d70fe;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease,
+        box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease;
 
     &:hover {
         background: #eff6ff;
         border-color: #1d4ed8;
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
-        transform: translateY(-2px);
+        color: #1d4ed8;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+        transform: translateY(-1px);
     }
 
     &:active {
         transform: translateY(0);
-        box-shadow: none;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.06);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #1d4ed8;
+        outline-offset: 2px;
     }
 `;
 

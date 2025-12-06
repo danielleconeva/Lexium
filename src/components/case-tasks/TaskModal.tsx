@@ -4,6 +4,9 @@ import { X } from "lucide-react";
 import type { TaskRecord } from "../../types/Task";
 import { useTasks } from "../../hooks/useTasks";
 import { useAuth } from "../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { showNotification } from "../../features/notifications/notificationsSlice";
+import type { AppDispatch } from "../../store/store";
 
 type Props = {
     mode: "create" | "edit";
@@ -15,6 +18,7 @@ type Props = {
 export default function TaskModal({ mode, task, caseId, onClose }: Props) {
     const { user } = useAuth();
     const { createTask, updateTask } = useTasks();
+    const dispatch = useDispatch<AppDispatch>();
 
     const [title, setTitle] = useState(task?.title ?? "");
     const [dueDate, setDueDate] = useState(task?.dueDate ?? "");
@@ -29,24 +33,51 @@ export default function TaskModal({ mode, task, caseId, onClose }: Props) {
     async function handleSubmit() {
         if (!isValid) return;
 
-        if (mode === "create") {
-            await createTask({
-                title,
-                status,
-                dueDate,
-                caseId,
-                firmId: user?.uid || "",
-                notes: undefined,
-            });
-        } else {
-            await updateTask(task!.id, {
-                title,
-                status,
-                dueDate,
-            });
-        }
+        try {
+            if (mode === "create") {
+                await createTask({
+                    title,
+                    status,
+                    dueDate,
+                    caseId,
+                    firmId: user?.uid || "",
+                    notes: undefined,
+                });
 
-        onClose();
+                dispatch(
+                    showNotification({
+                        type: "success",
+                        message: "Task created successfully!",
+                    })
+                );
+            } else {
+                await updateTask(task!.id, {
+                    title,
+                    status,
+                    dueDate,
+                });
+
+                dispatch(
+                    showNotification({
+                        type: "success",
+                        message: "Task updated successfully!",
+                    })
+                );
+            }
+
+            onClose();
+        } catch (err: any) {
+            dispatch(
+                showNotification({
+                    type: "error",
+                    message:
+                        err?.message ||
+                        (mode === "create"
+                            ? "Failed to create task."
+                            : "Failed to update task."),
+                })
+            );
+        }
     }
 
     return (

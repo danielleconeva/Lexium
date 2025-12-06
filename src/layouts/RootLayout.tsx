@@ -1,7 +1,9 @@
 import { Outlet } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import Navbar from "../components/Navbar";
+import Notification from "../components/Notification";
 import { theme } from "../styles/theme";
+import GlobalLoader from "../components/GlobalLoader";
 
 const AppContainer = styled.div`
     font-family: ${({ theme }) => theme.fonts.main};
@@ -39,7 +41,6 @@ const FooterElement = styled.footer`
         left: 0;
         width: 100%;
         height: 3px;
-
         background: linear-gradient(
             to top,
             rgba(0, 0, 0, 0.07),
@@ -51,22 +52,21 @@ const FooterElement = styled.footer`
 
 export default function RootLayout() {
     return (
-        <>
-            <ThemeProvider theme={theme}>
-                <AppContainer>
-                    <StickyNavbarWrapper>
-                        <Navbar />
-                    </StickyNavbarWrapper>
-                    <MainContent>
-                        <Outlet />
-                    </MainContent>
-                    <FooterElement>
-                        © 2025 Lexium — Legal Case Management Platform. All
-                        rights reserved. Designed for law firms and legal
-                        professionals.
-                    </FooterElement>
-                </AppContainer>
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={theme}>
+            <AppContainer>
+                <GlobalLoader />
+                <StickyNavbarWrapper>
+                    <Navbar />
+                </StickyNavbarWrapper>
+                <Notification />
+                <MainContent>
+                    <Outlet />
+                </MainContent>
+                <FooterElement>
+                    © 2025 Lexium — Legal Case Management Platform. All rights
+                    reserved.
+                </FooterElement>
+            </AppContainer>
+        </ThemeProvider>
     );
 }

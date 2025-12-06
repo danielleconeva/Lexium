@@ -13,6 +13,10 @@ import { useCases } from "../hooks/useCases";
 import type { CaseRecord } from "../types/Case";
 import { useAuth } from "../hooks/useAuth";
 
+import { useDispatch } from "react-redux";
+import { showNotification } from "../features/notifications/notificationsSlice";
+import type { AppDispatch } from "../store/store";
+
 const sanitizeText = (v: unknown): string => {
     if (v === null || v === undefined) return "";
     const str = String(v).trim();
@@ -29,6 +33,8 @@ export default function CaseEditPage() {
     const { user } = useAuth();
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
+
+    const dispatch = useDispatch<AppDispatch>();
 
     const { updateCase, loadFirmCases, getFirmCaseById } = useCases();
 
@@ -196,8 +202,25 @@ export default function CaseEditPage() {
             archiveNumber: status === "archived" ? caseNumber : null,
         };
 
-        await updateCase(id, updatedData);
-        navigate("/cases");
+        try {
+            await updateCase(id, updatedData);
+
+            dispatch(
+                showNotification({
+                    type: "success",
+                    message: "Case updated successfully!",
+                })
+            );
+
+            navigate("/cases");
+        } catch (err: any) {
+            dispatch(
+                showNotification({
+                    type: "error",
+                    message: err?.message || "Failed to update case.",
+                })
+            );
+        }
     }
 
     if (loadingCase) {
