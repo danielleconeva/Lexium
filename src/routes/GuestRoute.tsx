@@ -10,7 +10,7 @@ export function GuestRoute({ children }: GuestRouteProps) {
     const { user, loading } = useAuth();
 
     if (loading) {
-        return <p>Loading...</p>;
+        return null;
     }
 
     return user ? <Navigate to="/dashboard" replace /> : children;
