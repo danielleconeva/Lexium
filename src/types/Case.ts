@@ -1,7 +1,8 @@
 export interface CaseRecord {
     id: string;
+
     firmId: string;
-    firmName?: string;
+    firmName: string | null;
 
     caseNumber: string;
     caseYear: string;
@@ -13,21 +14,24 @@ export interface CaseRecord {
 
     clientName: string;
     opposingParty: string;
-    notes?: string;
-    nextHearingDate?: string;
+
+    notes: string | null;
+
+    nextHearingDate: string | null;
 
     isPublic: boolean;
 
-    publicDescription?: string;
-    partiesInitials?: string[];
-    initiationDate?: string;
-    hearingsChronology?: Array<{
+    publicDescription: string | null;
+
+    partiesInitials: string[];
+    initiationDate: string | null;
+
+    hearingsChronology: Array<{
         date: string;
         time: string;
     }>;
 
-
-    archiveNumber?: string;
+    archiveNumber: string | null;
 
     createdAt: number;
     updatedAt: number;

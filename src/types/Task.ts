@@ -4,9 +4,11 @@ export interface TaskRecord {
     firmId: string;
 
     title: string;
-    dueDate?: string;
+
+    dueDate: string | null;
     status: "To Do" | "In Progress" | "Done";
-    notes?: string;
+
+    notes: string | null;
 
     createdAt: number;
     updatedAt: number;

@@ -73,6 +73,16 @@ export default function CaseEditPage() {
 
     const [initialized, setInitialized] = useState(false);
 
+    const isFormValid =
+        caseNumber.trim() &&
+        caseYear.trim() &&
+        type.trim() &&
+        court.trim() &&
+        formation.trim() &&
+        clientName.trim() &&
+        opposingParty.trim() &&
+        initiationDate.trim();
+
     useEffect(() => {
         if (!existingCase || initialized) return;
 
@@ -157,7 +167,7 @@ export default function CaseEditPage() {
     }
 
     async function handleUpdateCase() {
-        if (!id) return;
+        if (!id || !isFormValid) return;
 
         const validHearings = hearings.filter(
             (h) => h.date.trim() !== "" || h.time.trim() !== ""
@@ -174,24 +184,19 @@ export default function CaseEditPage() {
 
             clientName,
             opposingParty,
-            notes,
+            notes: notes || null,
 
             isPublic,
-            publicDescription,
+            publicDescription: publicDescription || null,
             partiesInitials: getPartiesInitials(),
             initiationDate,
             hearingsChronology: validHearings,
 
-            nextHearingDate: computeNextHearing(),
-            archiveNumber: status === "archived" ? caseNumber : undefined,
+            nextHearingDate: computeNextHearing() || null,
+            archiveNumber: status === "archived" ? caseNumber : null,
         };
 
-        const cleaned = Object.fromEntries(
-            Object.entries(updatedData).filter(([_, v]) => v !== undefined)
-        );
-
-        await updateCase(id, cleaned);
-
+        await updateCase(id, updatedData);
         navigate("/cases");
     }
 
@@ -294,7 +299,10 @@ export default function CaseEditPage() {
                     <ClearButton onClick={handleResetToOriginal}>
                         Reset
                     </ClearButton>
-                    <SubmitButton onClick={handleUpdateCase}>
+                    <SubmitButton
+                        onClick={handleUpdateCase}
+                        disabled={!isFormValid}
+                    >
                         Save Changes
                     </SubmitButton>
                 </RightButtons>
@@ -491,44 +499,18 @@ const SubmitButton = styled.button`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 8px 24px rgba(61, 90, 254, 0.3),
-        0 3px 12px rgba(102, 126, 234, 0.2), inset 0 -2px 8px rgba(0, 0, 0, 0.1),
-        inset 0 2px 8px rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.3),
-            transparent
-        );
-        transition: left 0.5s;
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
     }
 
-    &:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 16px 40px rgba(61, 90, 254, 0.5),
-            0 8px 20px rgba(102, 126, 234, 0.4),
-            inset 0 -2px 8px rgba(0, 0, 0, 0.1),
-            inset 0 2px 8px rgba(255, 255, 255, 0.3);
-    }
-
-    &:hover::before {
-        left: 100%;
-    }
-
-    &:active {
-        transform: translateY(-1px) scale(1.01);
+    &:disabled:hover {
+        transform: none;
+        box-shadow: none;
     }
 `;
 

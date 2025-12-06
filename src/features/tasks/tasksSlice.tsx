@@ -75,6 +75,8 @@ export const createTask = createAsyncThunk<
 
         const taskToSave = {
             ...taskData,
+            dueDate: taskData.dueDate ?? null,
+            notes: taskData.notes ?? null,
             createdAt: now,
             updatedAt: now,
         };
@@ -101,10 +103,15 @@ export const updateTask = createAsyncThunk<
     try {
         const ref = doc(firestore, "tasks", taskId);
 
-        await updateDoc(ref, {
+        const safeUpdate = {
             ...updatedData,
+            dueDate:
+                updatedData.dueDate !== undefined ? updatedData.dueDate : null,
+            notes: updatedData.notes !== undefined ? updatedData.notes : null,
             updatedAt: Date.now(),
-        });
+        };
+
+        await updateDoc(ref, safeUpdate);
 
         const snap = await getDoc(ref);
         if (!snap.exists()) throw new Error("Task not found after update");

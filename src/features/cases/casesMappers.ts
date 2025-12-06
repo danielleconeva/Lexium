@@ -4,8 +4,8 @@ import type {
 } from "firebase/firestore";
 import type { CaseRecord } from "../../types/Case";
 
-function normalizeDateString(raw: unknown): string | undefined {
-    if (!raw) return undefined;
+function normalizeDateString(raw: unknown): string | null {
+    if (!raw) return null;
 
     if (typeof raw === "string") {
         return raw.length > 10 ? raw.slice(0, 10) : raw;
@@ -19,16 +19,13 @@ function normalizeDateString(raw: unknown): string | undefined {
             return d.toISOString().slice(0, 10);
         }
 
-        if (
-            "timestampValue" in obj &&
-            typeof obj.timestampValue === "string"
-        ) {
+        if ("timestampValue" in obj && typeof obj.timestampValue === "string") {
             const iso = obj.timestampValue;
             return iso.slice(0, 10);
         }
     }
 
-    return undefined;
+    return null;
 }
 
 function normalizeTimestampNumber(raw: unknown): number {
@@ -40,14 +37,10 @@ function normalizeTimestampNumber(raw: unknown): number {
         const obj = raw as { [key: string]: unknown };
 
         if ("toMillis" in obj && typeof obj.toMillis === "function") {
-            const millis = obj.toMillis() as number;
-            return millis;
+            return obj.toMillis() as number;
         }
 
-        if (
-            "timestampValue" in obj &&
-            typeof obj.timestampValue === "string"
-        ) {
+        if ("timestampValue" in obj && typeof obj.timestampValue === "string") {
             const iso = obj.timestampValue;
             const t = new Date(iso).getTime();
             return Number.isNaN(t) ? Date.now() : t;
@@ -62,66 +55,47 @@ export function mapDocumentToCaseRecord(
 ): CaseRecord {
     const data = document.data();
 
-    const {
-        firmId,
-        firmName,
-        caseNumber,
-        caseYear,
-        type,
-        court,
-        formation,
-        status,
-        isStarred,
-        clientName,
-        opposingParty,
-
-        notes,
-        nextHearingDate,
-        isPublic,
-        publicDescription,
-        partiesInitials,
-        initiationDate,
-        hearingsChronology,
-        archiveNumber,
-        createdAt,
-        updatedAt,
-    } = data;
-
     return {
         id: document.id,
-        firmId: String(firmId),
-        firmName: typeof firmName === "string" ? firmName : undefined,
+        firmId: String(data.firmId),
+        firmName: typeof data.firmName === "string" ? data.firmName : null,
 
-        caseNumber: String(caseNumber),
-        caseYear: String(caseYear),
-        type: String(type),
-        court: String(court),
-        formation: String(formation),
-        status: String(status),
-        isStarred: Boolean(isStarred),
-        clientName: String(clientName),
-        opposingParty: String(opposingParty),
-        notes: typeof notes === "string" ? notes : undefined,
-        nextHearingDate: normalizeDateString(nextHearingDate),
+        caseNumber: String(data.caseNumber),
+        caseYear: String(data.caseYear),
+        type: String(data.type),
+        court: String(data.court),
+        formation: String(data.formation),
+        status: String(data.status),
+        isStarred: Boolean(data.isStarred),
 
-        isPublic: Boolean(isPublic),
+        clientName: String(data.clientName),
+        opposingParty: String(data.opposingParty),
+
+        notes: typeof data.notes === "string" ? data.notes : null,
+
+        nextHearingDate: normalizeDateString(data.nextHearingDate),
+
+        isPublic: Boolean(data.isPublic),
 
         publicDescription:
-            typeof publicDescription === "string"
-                ? publicDescription
-                : undefined,
-        partiesInitials: Array.isArray(partiesInitials)
-            ? (partiesInitials as string[])
-            : undefined,
-        initiationDate: normalizeDateString(initiationDate),
-        hearingsChronology: Array.isArray(hearingsChronology)
-            ? (hearingsChronology as Array<{ date: string; time: string }>)
-            : undefined,
+            typeof data.publicDescription === "string"
+                ? data.publicDescription
+                : null,
+
+        partiesInitials: Array.isArray(data.partiesInitials)
+            ? (data.partiesInitials as string[])
+            : [],
+
+        initiationDate: normalizeDateString(data.initiationDate),
+
+        hearingsChronology: Array.isArray(data.hearingsChronology)
+            ? (data.hearingsChronology as Array<{ date: string; time: string }>)
+            : [],
 
         archiveNumber:
-            typeof archiveNumber === "string" ? archiveNumber : undefined,
+            typeof data.archiveNumber === "string" ? data.archiveNumber : null,
 
-        createdAt: normalizeTimestampNumber(createdAt),
-        updatedAt: normalizeTimestampNumber(updatedAt),
+        createdAt: normalizeTimestampNumber(data.createdAt),
+        updatedAt: normalizeTimestampNumber(data.updatedAt),
     };
 }

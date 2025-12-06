@@ -76,6 +76,11 @@ export const createCase = createAsyncThunk<
     },
     { rejectValue: string }
 >("cases/createCase", async ({ caseData, firmUser }, thunkAPI) => {
+    console.log("🔥 [THUNK START] createCase called with:", {
+        caseData,
+        firmUser,
+    });
+
     try {
         const now = Date.now();
 
@@ -85,18 +90,26 @@ export const createCase = createAsyncThunk<
             firmName: firmUser.firmName,
             createdAt: now,
             updatedAt: now,
+
+            nextHearingDate: caseData.nextHearingDate || null,
+            archiveNumber: caseData.archiveNumber || null,
         };
 
-        const createdSnap = await addDoc(
-            collection(firestore, "cases"),
-            caseToSave
-        );
+        console.log("📝 [THUNK] Normalized caseToSave:", caseToSave);
+
+        const ref = collection(firestore, "cases");
+        console.log("📁 [THUNK] Writing to:", ref.path);
+
+        const createdSnap = await addDoc(ref, caseToSave);
+
+        console.log("✅ [THUNK SUCCESS] ID:", createdSnap.id);
 
         return {
             id: createdSnap.id,
             ...caseToSave,
         };
     } catch (err: unknown) {
+        console.error("❌ [THUNK ERROR] Firestore write failed:", err);
         const msg = err instanceof Error ? err.message : "Unknown error";
         return thunkAPI.rejectWithValue(msg);
     }
@@ -110,12 +123,21 @@ export const updateCase = createAsyncThunk<
     try {
         const ref = doc(firestore, "cases", caseId);
 
-        await updateDoc(ref, {
+        const safeUpdate: any = {
             ...updatedData,
             updatedAt: Date.now(),
-        });
+            nextHearingDate:
+                updatedData.nextHearingDate !== undefined
+                    ? updatedData.nextHearingDate
+                    : null,
+            archiveNumber:
+                updatedData.archiveNumber !== undefined
+                    ? updatedData.archiveNumber
+                    : null,
+        };
 
-        // Fetch the fully updated document
+        await updateDoc(ref, safeUpdate);
+
         const snap = await getDoc(ref);
         if (!snap.exists()) throw new Error("Case not found after update");
 

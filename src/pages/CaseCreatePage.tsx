@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Star } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import CaseIdentificationCard from "../components/create-case/CaseIdentificationCard";
 import CaseDetailsCard from "../components/create-case/CaseDetailsCard";
@@ -32,35 +32,53 @@ export default function CaseCreatePage() {
     const [opposingParty, setOpposingParty] = useState("");
 
     const [initiationDate, setInitiationDate] = useState("");
+
     const [hearings, setHearings] = useState<{ date: string; time: string }[]>(
         []
     );
-
     const [notes, setNotes] = useState("");
     const [publicDescription, setPublicDescription] = useState("");
+
+    const isFormValid = useMemo(() => {
+        return (
+            caseNumber.trim() &&
+            caseYear.trim() &&
+            type.trim() &&
+            court.trim() &&
+            formation.trim() &&
+            clientName.trim() &&
+            opposingParty.trim() &&
+            initiationDate.trim()
+        );
+    }, [
+        caseNumber,
+        caseYear,
+        type,
+        court,
+        formation,
+        clientName,
+        opposingParty,
+        initiationDate,
+    ]);
 
     const getPartiesInitials = () => {
         const toInitials = (fullName: string): string => {
             if (!fullName.trim()) return "";
-
             return fullName
                 .trim()
                 .split(/\s+/)
-                .map((part) => part[0].toUpperCase() + ".")
+                .map((p) => p[0].toUpperCase() + ".")
                 .join(" ");
         };
-
         return [toInitials(clientName), toInitials(opposingParty)];
     };
 
     const computeNextHearing = () => {
-        const validHearings = hearings.filter(
+        const valid = hearings.filter(
             (h) => h.date.trim() !== "" || h.time.trim() !== ""
         );
-
-        if (validHearings.length === 0) return undefined;
-
-        const sorted = [...validHearings].sort(
+        if (valid.length === 0) return null;
+        const sorted = [...valid].sort(
             (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
         return sorted[0].date;
@@ -84,7 +102,7 @@ export default function CaseCreatePage() {
     }
 
     async function handleCreateCase() {
-        if (!user) return;
+        if (!user || !isFormValid) return;
 
         const validHearings = hearings.filter(
             (h) => h.date.trim() !== "" || h.time.trim() !== ""
@@ -99,19 +117,16 @@ export default function CaseCreatePage() {
                 formation,
                 status,
                 isStarred,
-
                 clientName,
                 opposingParty,
-                notes,
-
+                notes: notes || null,
                 isPublic,
-                publicDescription,
+                publicDescription: publicDescription || null,
                 partiesInitials: getPartiesInitials(),
                 initiationDate,
                 hearingsChronology: validHearings,
-
                 nextHearingDate: computeNextHearing(),
-                archiveNumber: status === "archived" ? caseNumber : undefined,
+                archiveNumber: status === "archived" ? caseNumber : null,
             },
             firmUser: {
                 uid: user.uid,
@@ -206,7 +221,11 @@ export default function CaseCreatePage() {
 
                 <RightButtons>
                     <ClearButton onClick={handleClear}>Clear</ClearButton>
-                    <SubmitButton onClick={handleCreateCase}>
+
+                    <SubmitButton
+                        onClick={handleCreateCase}
+                        disabled={!isFormValid}
+                    >
                         Create Case
                     </SubmitButton>
                 </RightButtons>
@@ -403,44 +422,18 @@ const SubmitButton = styled.button`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    box-shadow: 0 8px 24px rgba(61, 90, 254, 0.3),
-        0 3px 12px rgba(102, 126, 234, 0.2), inset 0 -2px 8px rgba(0, 0, 0, 0.1),
-        inset 0 2px 8px rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
 
-    &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.3),
-            transparent
-        );
-        transition: left 0.5s;
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
     }
 
-    &:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 16px 40px rgba(61, 90, 254, 0.5),
-            0 8px 20px rgba(102, 126, 234, 0.4),
-            inset 0 -2px 8px rgba(0, 0, 0, 0.1),
-            inset 0 2px 8px rgba(255, 255, 255, 0.3);
-    }
-
-    &:hover::before {
-        left: 100%;
-    }
-
-    &:active {
-        transform: translateY(-1px) scale(1.01);
+    &:disabled:hover {
+        transform: none;
+        box-shadow: none;
     }
 `;
 

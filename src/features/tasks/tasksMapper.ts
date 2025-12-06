@@ -60,9 +60,9 @@ export function mapDocumentToTaskRecord(
         title: String(data.title),
         status: data.status as TaskRecord["status"],
 
-        notes: typeof data.notes === "string" ? data.notes : undefined,
+        notes: typeof data.notes === "string" ? data.notes : null,
 
-        dueDate: normalizeTaskDateString(data.dueDate),
+        dueDate: normalizeTaskDateString(data.dueDate) ?? null,
 
         createdAt: normalizeTaskTimestampNumber(data.createdAt),
         updatedAt: normalizeTaskTimestampNumber(data.updatedAt),

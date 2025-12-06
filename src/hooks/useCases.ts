@@ -5,10 +5,11 @@ import type { RootState, AppDispatch } from "../store/store";
 import {
     fetchFirmCases,
     fetchPublicCases,
-    createCase,
+    createCase as createCaseThunk,
     updateCase,
     deleteCase,
 } from "../features/cases/casesSlice";
+
 import type { CaseRecord } from "../types/Case";
 
 export function useCases() {
@@ -19,19 +20,19 @@ export function useCases() {
     );
 
     const loadFirmCases = useCallback(
-        (firmId: string) => {
-            return dispatch(fetchFirmCases(firmId));
-        },
+        (firmId: string) => dispatch(fetchFirmCases(firmId)),
         [dispatch]
     );
 
-    const loadPublicCases = useCallback(() => {
-        return dispatch(fetchPublicCases());
-    }, [dispatch]);
+    const loadPublicCases = useCallback(
+        () => dispatch(fetchPublicCases()),
+        [dispatch]
+    );
 
     const createCaseHandler = useCallback(
         (caseData: any) => {
-            return dispatch(createCase(caseData));
+            console.log("📌 createCaseHandler received:", caseData);
+            return dispatch(createCaseThunk(caseData));
         },
         [dispatch]
     );
@@ -44,30 +45,20 @@ export function useCases() {
     );
 
     const deleteCaseHandler = useCallback(
-        (caseId: string) => {
-            return dispatch(deleteCase(caseId));
-        },
+        (caseId: string) => dispatch(deleteCase(caseId)),
         [dispatch]
     );
 
     const getPublicCaseById = useCallback(
         (caseId: string): CaseRecord | null => {
-            const matchingCaseRecord = publicCases.find(
-                (caseRecord) => caseRecord.id === caseId
-            );
-
-            return matchingCaseRecord ?? null;
+            return publicCases.find((c) => c.id === caseId) ?? null;
         },
         [publicCases]
     );
 
     const getFirmCaseById = useCallback(
         (caseId: string): CaseRecord | null => {
-            const matchingCaseRecord = firmCases.find(
-                (caseRecord) => caseRecord.id === caseId
-            );
-
-            return matchingCaseRecord ?? null;
+            return firmCases.find((c) => c.id === caseId) ?? null;
         },
         [firmCases]
     );
@@ -79,9 +70,11 @@ export function useCases() {
         error,
         loadFirmCases,
         loadPublicCases,
+
         createCase: createCaseHandler,
         updateCase: updateCaseHandler,
         deleteCase: deleteCaseHandler,
+
         getPublicCaseById,
         getFirmCaseById,
     };

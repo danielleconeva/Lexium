@@ -8,6 +8,7 @@ import {
 import {
     doc,
     setDoc,
+    getDoc,
     collection,
     query,
     where,
@@ -77,11 +78,17 @@ export const loginUser = createAsyncThunk<
             password
         );
 
+        const uid = userCredential.user.uid;
+
+        const firmSnap = await getDoc(doc(firestore, "firms", uid));
+
+        const firmData = firmSnap.exists() ? firmSnap.data() : null;
+
         return {
-            uid: userCredential.user.uid,
+            uid,
             email,
-            firmName: "",
-            createdAt: Date.now(),
+            firmName: firmData?.firmName || "",
+            createdAt: firmData?.createdAt || Date.now(),
         };
     } catch (error: any) {
         return thunkAPI.rejectWithValue(error.message);
@@ -106,7 +113,6 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-
             .addCase(registerUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -118,8 +124,9 @@ const authSlice = createSlice({
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Registration failed.";
-            })
+            });
 
+        builder
             .addCase(loginUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -131,11 +138,11 @@ const authSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Login failed.";
-            })
-
-            .addCase(logoutUser.fulfilled, (state) => {
-                state.user = null;
             });
+
+        builder.addCase(logoutUser.fulfilled, (state) => {
+            state.user = null;
+        });
     },
 });
 
