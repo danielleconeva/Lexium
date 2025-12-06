@@ -264,7 +264,7 @@ export type LoginTouched = { email: boolean; password: boolean };
 export type LoginErrors = Partial<LoginValues>;
 
 export default function LoginForm() {
-    const { loading, error, login } = useAuth();
+    const { loading, login } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

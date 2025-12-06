@@ -9,7 +9,9 @@ import {
     deleteDoc,
     query,
     where,
+    getDoc,
 } from "firebase/firestore";
+
 import type { CaseRecord } from "../../types/Case";
 import type { FirmUser } from "../../types/User";
 import { mapDocumentToCaseRecord } from "./casesMappers";
@@ -34,18 +36,16 @@ export const fetchFirmCases = createAsyncThunk<
     { rejectValue: string }
 >("cases/fetchFirmCases", async (firmId, thunkAPI) => {
     try {
-        const casesQuery = query(
+        const q = query(
             collection(firestore, "cases"),
             where("firmId", "==", firmId)
         );
 
-        const snapshot = await getDocs(casesQuery);
-
+        const snapshot = await getDocs(q);
         return snapshot.docs.map(mapDocumentToCaseRecord);
-    } catch (error: unknown) {
-        const message =
-            error instanceof Error ? error.message : "Unknown error";
-        return thunkAPI.rejectWithValue(message);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        return thunkAPI.rejectWithValue(msg);
     }
 });
 
@@ -55,18 +55,16 @@ export const fetchPublicCases = createAsyncThunk<
     { rejectValue: string }
 >("cases/fetchPublicCases", async (_, thunkAPI) => {
     try {
-        const casesQuery = query(
+        const q = query(
             collection(firestore, "cases"),
             where("isPublic", "==", true)
         );
 
-        const snapshot = await getDocs(casesQuery);
-
+        const snapshot = await getDocs(q);
         return snapshot.docs.map(mapDocumentToCaseRecord);
-    } catch (error: unknown) {
-        const message =
-            error instanceof Error ? error.message : "Unknown error";
-        return thunkAPI.rejectWithValue(message);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        return thunkAPI.rejectWithValue(msg);
     }
 });
 
@@ -85,40 +83,46 @@ export const createCase = createAsyncThunk<
             ...caseData,
             firmId: firmUser.uid,
             firmName: firmUser.firmName,
-            createdAt: caseData.createdAt ?? now,
-            updatedAt: caseData.updatedAt ?? now,
+            createdAt: now,
+            updatedAt: now,
         };
 
-        const createdDocument = await addDoc(
+        const createdSnap = await addDoc(
             collection(firestore, "cases"),
             caseToSave
         );
 
         return {
-            id: createdDocument.id,
+            id: createdSnap.id,
             ...caseToSave,
         };
-    } catch (error: unknown) {
-        const message =
-            error instanceof Error ? error.message : "Unknown error";
-        return thunkAPI.rejectWithValue(message);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        return thunkAPI.rejectWithValue(msg);
     }
 });
 
 export const updateCase = createAsyncThunk<
-    { caseId: string; updatedData: Partial<CaseRecord> },
+    CaseRecord,
     { caseId: string; updatedData: Partial<CaseRecord> },
     { rejectValue: string }
->("cases/updateCase", async (payload, thunkAPI) => {
+>("cases/updateCase", async ({ caseId, updatedData }, thunkAPI) => {
     try {
-        const caseRef = doc(firestore, "cases", payload.caseId);
-        await updateDoc(caseRef, payload.updatedData);
+        const ref = doc(firestore, "cases", caseId);
 
-        return payload;
-    } catch (error: unknown) {
-        const message =
-            error instanceof Error ? error.message : "Unknown error";
-        return thunkAPI.rejectWithValue(message);
+        await updateDoc(ref, {
+            ...updatedData,
+            updatedAt: Date.now(),
+        });
+
+        // Fetch the fully updated document
+        const snap = await getDoc(ref);
+        if (!snap.exists()) throw new Error("Case not found after update");
+
+        return mapDocumentToCaseRecord(snap);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        return thunkAPI.rejectWithValue(msg);
     }
 });
 
@@ -130,10 +134,9 @@ export const deleteCase = createAsyncThunk<
     try {
         await deleteDoc(doc(firestore, "cases", caseId));
         return caseId;
-    } catch (error: unknown) {
-        const message =
-            error instanceof Error ? error.message : "Unknown error";
-        return thunkAPI.rejectWithValue(message);
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Unknown error";
+        return thunkAPI.rejectWithValue(msg);
     }
 });
 
@@ -154,8 +157,9 @@ const casesSlice = createSlice({
             .addCase(fetchFirmCases.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to load firm cases.";
-            })
+            });
 
+        builder
             .addCase(fetchPublicCases.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -167,30 +171,26 @@ const casesSlice = createSlice({
             .addCase(fetchPublicCases.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to load public cases.";
-            })
-
-            .addCase(createCase.fulfilled, (state, action) => {
-                state.firmCases.push(action.payload);
-            })
-
-            .addCase(updateCase.fulfilled, (state, action) => {
-                const index = state.firmCases.findIndex(
-                    (item) => item.id === action.payload.caseId
-                );
-
-                if (index !== -1) {
-                    state.firmCases[index] = {
-                        ...state.firmCases[index],
-                        ...action.payload.updatedData,
-                    };
-                }
-            })
-
-            .addCase(deleteCase.fulfilled, (state, action) => {
-                state.firmCases = state.firmCases.filter(
-                    (record) => record.id !== action.payload
-                );
             });
+
+        builder.addCase(createCase.fulfilled, (state, action) => {
+            state.firmCases.push(action.payload);
+        });
+
+        builder.addCase(updateCase.fulfilled, (state, action) => {
+            const updated = action.payload;
+            const index = state.firmCases.findIndex((c) => c.id === updated.id);
+
+            if (index !== -1) {
+                state.firmCases[index] = updated;
+            }
+        });
+
+        builder.addCase(deleteCase.fulfilled, (state, action) => {
+            state.firmCases = state.firmCases.filter(
+                (c) => c.id !== action.payload
+            );
+        });
     },
 });
 
