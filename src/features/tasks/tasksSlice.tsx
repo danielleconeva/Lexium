@@ -9,7 +9,9 @@ import {
     doc,
     query,
     where,
+    getDoc,
 } from "firebase/firestore";
+
 import type { TaskRecord } from "../../types/Task";
 import { mapDocumentToTaskRecord } from "./tasksMapper";
 
@@ -39,7 +41,6 @@ export const fetchCaseTasks = createAsyncThunk<
         );
 
         const snapshot = await getDocs(tasksQuery);
-
         return snapshot.docs.map(mapDocumentToTaskRecord);
     } catch (error: any) {
         return thunkAPI.rejectWithValue(error.message);
@@ -58,7 +59,6 @@ export const fetchFirmTasks = createAsyncThunk<
         );
 
         const snapshot = await getDocs(tasksQuery);
-
         return snapshot.docs.map(mapDocumentToTaskRecord);
     } catch (error: any) {
         return thunkAPI.rejectWithValue(error.message);
@@ -67,18 +67,26 @@ export const fetchFirmTasks = createAsyncThunk<
 
 export const createTask = createAsyncThunk<
     TaskRecord,
-    Omit<TaskRecord, "id">,
+    Omit<TaskRecord, "id" | "createdAt" | "updatedAt">,
     { rejectValue: string }
 >("tasks/createTask", async (taskData, thunkAPI) => {
     try {
-        const createdDocument = await addDoc(
+        const now = Date.now();
+
+        const taskToSave = {
+            ...taskData,
+            createdAt: now,
+            updatedAt: now,
+        };
+
+        const createdDoc = await addDoc(
             collection(firestore, "tasks"),
-            taskData
+            taskToSave
         );
 
         return {
-            ...taskData,
-            id: createdDocument.id,
+            id: createdDoc.id,
+            ...taskToSave,
         };
     } catch (error: any) {
         return thunkAPI.rejectWithValue(error.message);
@@ -86,14 +94,22 @@ export const createTask = createAsyncThunk<
 });
 
 export const updateTask = createAsyncThunk<
-    { taskId: string; updatedData: Partial<TaskRecord> },
+    TaskRecord,
     { taskId: string; updatedData: Partial<TaskRecord> },
     { rejectValue: string }
 >("tasks/updateTask", async ({ taskId, updatedData }, thunkAPI) => {
     try {
-        const taskRef = doc(firestore, "tasks", taskId);
-        await updateDoc(taskRef, updatedData);
-        return { taskId, updatedData };
+        const ref = doc(firestore, "tasks", taskId);
+
+        await updateDoc(ref, {
+            ...updatedData,
+            updatedAt: Date.now(),
+        });
+
+        const snap = await getDoc(ref);
+        if (!snap.exists()) throw new Error("Task not found after update");
+
+        return mapDocumentToTaskRecord(snap);
     } catch (error: any) {
         return thunkAPI.rejectWithValue(error.message);
     }
@@ -120,6 +136,7 @@ const tasksSlice = createSlice({
         builder
             .addCase(fetchCaseTasks.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(fetchCaseTasks.fulfilled, (state, action) => {
                 state.loading = false;
@@ -128,10 +145,12 @@ const tasksSlice = createSlice({
             .addCase(fetchCaseTasks.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to load case tasks.";
-            })
+            });
 
+        builder
             .addCase(fetchFirmTasks.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(fetchFirmTasks.fulfilled, (state, action) => {
                 state.loading = false;
@@ -140,47 +159,39 @@ const tasksSlice = createSlice({
             .addCase(fetchFirmTasks.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to load firm tasks.";
-            })
-
-            .addCase(createTask.fulfilled, (state, action) => {
-                state.firmTasks.push(action.payload);
-
-                if (
-                    state.caseTasks.length > 0 &&
-                    state.caseTasks[0]?.caseId === action.payload.caseId
-                ) {
-                    state.caseTasks.push(action.payload);
-                }
-            })
-
-            .addCase(updateTask.fulfilled, (state, action) => {
-                const { taskId, updatedData } = action.payload;
-
-                const idx1 = state.caseTasks.findIndex((t) => t.id === taskId);
-                if (idx1 !== -1) {
-                    state.caseTasks[idx1] = {
-                        ...state.caseTasks[idx1],
-                        ...updatedData,
-                    };
-                }
-
-                const idx2 = state.firmTasks.findIndex((t) => t.id === taskId);
-                if (idx2 !== -1) {
-                    state.firmTasks[idx2] = {
-                        ...state.firmTasks[idx2],
-                        ...updatedData,
-                    };
-                }
-            })
-
-            .addCase(deleteTask.fulfilled, (state, action) => {
-                state.caseTasks = state.caseTasks.filter(
-                    (task) => task.id !== action.payload
-                );
-                state.firmTasks = state.firmTasks.filter(
-                    (task) => task.id !== action.payload
-                );
             });
+
+        builder.addCase(createTask.fulfilled, (state, action) => {
+            const task = action.payload;
+
+            state.firmTasks.push(task);
+
+            if (
+                state.caseTasks.length === 0 ||
+                state.caseTasks.some((t) => t.caseId === task.caseId)
+            ) {
+                state.caseTasks.push(task);
+            }
+        });
+
+        builder.addCase(updateTask.fulfilled, (state, action) => {
+            const updated = action.payload;
+
+            const idx1 = state.caseTasks.findIndex((t) => t.id === updated.id);
+            if (idx1 !== -1) state.caseTasks[idx1] = updated;
+
+            const idx2 = state.firmTasks.findIndex((t) => t.id === updated.id);
+            if (idx2 !== -1) state.firmTasks[idx2] = updated;
+        });
+
+        builder.addCase(deleteTask.fulfilled, (state, action) => {
+            state.caseTasks = state.caseTasks.filter(
+                (task) => task.id !== action.payload
+            );
+            state.firmTasks = state.firmTasks.filter(
+                (task) => task.id !== action.payload
+            );
+        });
     },
 });
 
