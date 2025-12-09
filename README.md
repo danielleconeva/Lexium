@@ -1,7 +1,6 @@
 # Lexium – Legal Case Management Portal
 
-Lexium is a **legal case management portal for law firms**, built with **React + TypeScript + Redux Toolkit** on top of the **Firebase ecosystem**  
-(**Firebase Authentication**, **Cloud Firestore**, **Firebase Hosting**).
+Lexium is a **legal case management portal for law firms**, built with **React + TypeScript + Redux Toolkit** and integrated with the **Firebase ecosystem** (**Firebase Authentication**, **Cloud Firestore**, **Firebase Hosting**).
 
 Each law firm operates in its own isolated workspace for **cases, hearings, and tasks**, while optionally publishing **anonymised case summaries** to a public catalogue.
 
