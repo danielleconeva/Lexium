@@ -220,24 +220,6 @@ The agenda groups hearings by date, rendering compact date rows (day number, wee
 
 ---
 
-## 7. UX & UI Highlights
-
-Lexium uses a **consistent, modern UI language**:
-
--   Card-based layout with soft shadows and rounded corners.
--   Controlled use of gradients for primary actions (e.g. main buttons, key badges).
--   Animated elements:
-    -   Entrance animations for dashboards and statistic badges.
-    -   Button hover states and subtle transform effects.
--   **Global UX infrastructure**:
-    -   Centralised toast notifications via Redux.
-    -   Global loader overlay based on combined slice loading states.
-    -   Reusable confirmation modal for destructive actions.
-
-This makes Lexium suitable as a **portfolio project** to demonstrate both front-end engineering and product thinking in a legal-tech setting.
-
----
-
 ## Getting Started
 
 Follow these steps to run Lexium locally:
