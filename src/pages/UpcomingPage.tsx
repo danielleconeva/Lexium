@@ -1,21 +1,64 @@
 import { useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import type { CaseRecord } from "../types/Case";
 import { useCases } from "../hooks/useCases";
 import { useAuth } from "../hooks/useAuth";
 import DateRow from "../components/upcoming/DateRow";
 import HearingCard from "../components/upcoming/HearingCard";
 
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const slideInUp = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const slideInDown = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const scaleIn = keyframes`
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+`;
+
 const PageWrapper = styled.div`
     max-width: 1800px;
     margin: auto;
-    padding: 2rem;
-    padding-bottom: 6rem;
+    padding: 2rem 2rem 6rem;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const PageHeader = styled.div`
     padding: 4rem 2rem 1rem;
     text-align: center;
+    animation: ${slideInDown} 0.7s ease-out;
 `;
 
 const TitleLine1 = styled.h1`
@@ -38,21 +81,40 @@ const HeroDescription = styled.p`
     font-size: 1.2rem;
     color: #666;
     max-width: 800px;
-    margin: 2rem auto;
-    margin-bottom: 0.5rem;
+    margin: 2rem auto 0.5rem;
+    animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
 `;
 
 const TimelineContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0;
+    margin-top: 2rem;
 `;
 
 const TimelineItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
+    animation: ${slideInUp} 0.6s ease-out backwards;
+
+    &:nth-child(1) {
+        animation-delay: 0.3s;
+    }
+    &:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    &:nth-child(3) {
+        animation-delay: 0.5s;
+    }
+    &:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+    &:nth-child(5) {
+        animation-delay: 0.7s;
+    }
+    &:nth-child(n + 6) {
+        animation-delay: 0.75s;
+    }
 `;
 
 const TimelineLine = styled.div`
@@ -69,15 +131,40 @@ const TimelineDot = styled.div`
     margin: 0.5rem 0;
 `;
 
+const DateRowWrapper = styled.div`
+    animation: ${scaleIn} 0.5s ease-out backwards;
+`;
+
 const HearingsColumn = styled.div`
     width: 80%;
     max-width: 850px;
-    margin: 0 auto;
+    margin: 1.5rem auto;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+
+    & > * {
+        animation: ${scaleIn} 0.5s ease-out backwards;
+    }
+
+    & > *:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    & > *:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+    & > *:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+    & > *:nth-child(4) {
+        animation-delay: 0.25s;
+    }
+    & > *:nth-child(5) {
+        animation-delay: 0.3s;
+    }
+    & > *:nth-child(n + 6) {
+        animation-delay: 0.35s;
+    }
 `;
 
 export default function UpcomingPage() {
@@ -85,9 +172,7 @@ export default function UpcomingPage() {
     const { user } = useAuth();
 
     useEffect(() => {
-        if (user?.uid) {
-            loadFirmCases(user.uid);
-        }
+        if (user?.uid) loadFirmCases(user.uid);
     }, [loadFirmCases]);
 
     if (loading) {
@@ -129,7 +214,7 @@ export default function UpcomingPage() {
     });
 
     const sortedDateKeys = Object.keys(groupedHearings).sort(
-        (dateA, dateB) => new Date(dateA).getTime() - new Date(dateB).getTime()
+        (a, b) => new Date(a).getTime() - new Date(b).getTime()
     );
 
     return (
@@ -152,19 +237,18 @@ export default function UpcomingPage() {
                             <TimelineLine />
                             <TimelineDot />
 
-                            <DateRow
-                                date={date}
-                                count={hearingsForDate.length}
-                            />
+                            <DateRowWrapper>
+                                <DateRow
+                                    date={date}
+                                    count={hearingsForDate.length}
+                                />
+                            </DateRowWrapper>
 
                             <HearingsColumn>
                                 {hearingsForDate.map(
-                                    (
-                                        { case: caseRecord, hearing },
-                                        hearingIndex
-                                    ) => (
+                                    ({ case: caseRecord, hearing }, i) => (
                                         <HearingCard
-                                            key={hearingIndex}
+                                            key={i}
                                             caseRecord={caseRecord}
                                             hearing={hearing}
                                         />

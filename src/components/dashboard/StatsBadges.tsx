@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import StatBadge from "./StatBadge";
 import { Folder, ClipboardList, Users, Gauge } from "lucide-react";
 
@@ -20,21 +20,18 @@ export default function StatsBadges({ stats }: StatsBadgesProps) {
                 label="Open Cases"
                 bgColor="#4d8ff8"
             />
-
             <StatBadge
                 icon={<ClipboardList size={20} strokeWidth={2.2} />}
                 number={stats.pendingTasks}
                 label="Pending Tasks"
                 bgColor="#fab847"
             />
-
             <StatBadge
                 icon={<Users size={20} strokeWidth={2.2} />}
                 number={stats.totalCases}
                 label="Total Cases"
                 bgColor="#d36af9"
             />
-
             <StatBadge
                 icon={<Gauge size={20} strokeWidth={2.2} />}
                 number={stats.completionRate}
@@ -45,6 +42,17 @@ export default function StatsBadges({ stats }: StatsBadgesProps) {
     );
 }
 
+const slideInUp = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
 const Row = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -52,4 +60,24 @@ const Row = styled.div`
     max-width: 1200px;
     margin: 3rem auto;
     margin-top: 0;
+
+    > * {
+        animation: ${slideInUp} 0.6s ease-out backwards;
+    }
+
+    > *:nth-child(1) {
+        animation-delay: 0.4s;
+    }
+
+    > *:nth-child(2) {
+        animation-delay: 0.5s;
+    }
+
+    > *:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+
+    > *:nth-child(4) {
+        animation-delay: 0.7s;
+    }
 `;

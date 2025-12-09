@@ -95,21 +95,15 @@ export const createCase = createAsyncThunk<
             archiveNumber: caseData.archiveNumber || null,
         };
 
-        console.log("📝 [THUNK] Normalized caseToSave:", caseToSave);
-
         const ref = collection(firestore, "cases");
-        console.log("📁 [THUNK] Writing to:", ref.path);
 
         const createdSnap = await addDoc(ref, caseToSave);
-
-        console.log("✅ [THUNK SUCCESS] ID:", createdSnap.id);
 
         return {
             id: createdSnap.id,
             ...caseToSave,
         };
     } catch (err: unknown) {
-        console.error("❌ [THUNK ERROR] Firestore write failed:", err);
         const msg = err instanceof Error ? err.message : "Unknown error";
         return thunkAPI.rejectWithValue(msg);
     }

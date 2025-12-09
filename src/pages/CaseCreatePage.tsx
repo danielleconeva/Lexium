@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Star } from "lucide-react";
 import { useState, useMemo } from "react";
 import CaseIdentificationCard from "../components/create-case/CaseIdentificationCard";
@@ -12,6 +12,31 @@ import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { showNotification } from "../features/notifications/notificationsSlice";
 import type { AppDispatch } from "../store/store";
+
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const fadeSlideUp = keyframes`
+    0% { opacity: 0; transform: translateY(28px); }
+    100% { opacity: 1; transform: translateY(0); }
+`;
+
+const slideInLeft = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+`;
 
 export default function CaseCreatePage() {
     const navigate = useNavigate();
@@ -258,6 +283,7 @@ const PageWrapper = styled.div`
     flex-direction: column;
     overflow-x: hidden;
     padding: 3rem 8rem 4rem 8rem;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const BackButton = styled.a`
@@ -268,6 +294,8 @@ const BackButton = styled.a`
     margin-left: 4.2rem;
     cursor: pointer;
     max-width: 180px;
+    opacity: 0;
+    animation: ${slideInLeft} 0.6s ease-out 0.1s forwards;
 
     &::before {
         content: "<-";
@@ -285,6 +313,8 @@ const HeadingSection = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-right: 5rem;
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.7s ease-out 0.2s forwards;
 `;
 
 const Heading = styled.h3`
@@ -308,6 +338,27 @@ const MainSection = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
+
+    > * {
+        opacity: 0;
+        animation: ${fadeSlideUp} 0.6s ease-out forwards;
+    }
+
+    > *:nth-child(1) {
+        animation-delay: 0.3s;
+    }
+    > *:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+    > *:nth-child(3) {
+        animation-delay: 0.5s;
+    }
+    > *:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+    > *:nth-child(5) {
+        animation-delay: 0.7s;
+    }
 `;
 
 const PublicToggle = styled.div`
@@ -418,6 +469,8 @@ const BottomSection = styled.div`
     margin: 2rem 6.5rem 0 6.5rem;
     padding-top: 2rem;
     padding: 1rem 4rem;
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.7s ease-out 0.8s forwards;
 `;
 
 const RightButtons = styled.div`

@@ -26,6 +26,33 @@ const steps = [
     },
 ];
 
+const fadeSlideUp = keyframes`
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+`;
+
+const fadeScale = keyframes`
+  0% { opacity: 0; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
+`;
+
+const gentleFloat = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+`;
+
+const fadeInUp = keyframes`
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const ping = keyframes`
+  0% { transform: scale(1); opacity: 0.5; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+`;
+
 const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -61,6 +88,9 @@ const HeroSection = styled.section`
 const HeroTitle = styled.div`
     text-align: center;
     margin-bottom: 2rem;
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.8s ease-out forwards;
+    animation-delay: 0.1s;
 `;
 
 const TitleLine1 = styled.h1`
@@ -91,6 +121,10 @@ const HeroDescription = styled.p`
     max-width: 800px;
     text-align: center;
     margin: 0 auto 2.5rem;
+
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.8s ease-out forwards;
+    animation-delay: 0.25s;
 `;
 
 const ButtonGroup = styled.div`
@@ -99,6 +133,10 @@ const ButtonGroup = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 1rem;
+
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.8s ease-out forwards;
+    animation-delay: 0.4s;
 `;
 
 const PrimaryButton = styled(Link)`
@@ -228,6 +266,10 @@ const BrandName = styled.h2`
 
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.03),
         0 16px 48px rgba(0, 0, 0, 0.02);
+
+    opacity: 0;
+    animation: ${fadeScale} 1.1s ease-out forwards,
+        ${gentleFloat} 6s ease-in-out infinite 1.1s;
 `;
 
 const Section = styled.section`
@@ -272,17 +314,6 @@ const StepsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 3rem;
-`;
-
-const fadeInUp = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 `;
 
 const StepRow = styled.div<{ delay: number; reverseOnDesktop?: boolean }>`
@@ -368,21 +399,6 @@ const IconCircleInner = styled.div`
     }
 `;
 
-const ping = keyframes`
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  70% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-`;
-
 const IconCirclePulse = styled.div`
     position: absolute;
     inset: 0;
@@ -433,6 +449,10 @@ const SectionTitle = styled.h2`
     line-height: 1.1;
     text-align: center;
     letter-spacing: -0.02em;
+
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.8s ease-out forwards;
+    animation-delay: 0.1s;
 `;
 
 const SectionDescription = styled.p`
@@ -442,6 +462,10 @@ const SectionDescription = styled.p`
     max-width: 800px;
     text-align: center;
     margin: 0 auto 1rem;
+
+    opacity: 0;
+    animation: ${fadeSlideUp} 0.8s ease-out forwards;
+    animation-delay: 0.25s;
 `;
 
 const CTASection = styled.section`
@@ -461,6 +485,10 @@ const CTAContainer = styled.div`
     box-shadow: 0 12px 40px rgba(61, 90, 254, 0.12),
         0 4px 12px rgba(61, 90, 254, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
+
+    opacity: 0;
+    animation: ${fadeScale} 0.8s ease-out forwards;
+    animation-delay: 0.3s;
 `;
 
 const CTATitle = styled.h2`

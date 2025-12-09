@@ -52,6 +52,19 @@ const ErrorNumber = styled.h1`
     -webkit-text-fill-color: transparent;
     background-clip: text;
 
+    animation: slideDown 0.9s ease-out;
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     @media (max-width: 768px) {
         font-size: 6rem;
         letter-spacing: -4px;
@@ -68,6 +81,19 @@ const GlassCard = styled.div`
     margin-top: 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
         inset 0 1px 2px rgba(255, 255, 255, 0.5);
+
+    animation: slideUpCard 0.9s ease-out;
+
+    @keyframes slideUpCard {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 `;
 
 const Title = styled.h2`
@@ -95,6 +121,30 @@ const ButtonGroup = styled.div`
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
+
+    & > * {
+        opacity: 0;
+        animation: fadeIn 0.8s forwards;
+    }
+
+    & > *:nth-child(1) {
+        animation-delay: 0.3s;
+    }
+
+    & > *:nth-child(2) {
+        animation-delay: 0.45s;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 `;
 
 const PrimaryButton = styled(Link)`

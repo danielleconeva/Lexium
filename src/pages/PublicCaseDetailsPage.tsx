@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import GeneralInfoCard from "../components/public-cases-details/GeneralInfoCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCases } from "../hooks/useCases";
@@ -7,11 +7,86 @@ import CaseInformationCard from "../components/public-cases-details/CaseInformat
 import PartiesCard from "../components/public-cases-details/PartiesCard";
 import HearingsCard from "../components/public-cases-details/HearingsCard";
 
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const slideInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const slideInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
 const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     padding: 3rem 2rem 4rem 2rem;
+
+    & > * {
+        opacity: 0;
+        animation: ${fadeInUp} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+    }
+
+    & > *:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+
+    & > *:nth-child(2) {
+        animation: ${slideInLeft} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+        animation-delay: 0.15s;
+    }
+
+    & > *:nth-child(3) {
+        animation: ${scaleIn} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation-delay: 0.25s;
+    }
+
+    & > *:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    & > *:nth-child(5) {
+        animation: ${fadeInUp} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+        animation-delay: 0.55s;
+    }
 `;
 
 const Heading = styled.h3`
@@ -19,6 +94,27 @@ const Heading = styled.h3`
     font-weight: 700;
     color: #0a0a0a;
     margin: 1rem 0 0.5rem 6.5rem;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            ${({ theme }) => theme.colors.primaryBlue},
+            transparent
+        );
+        animation: ${keyframes`
+            to {
+                width: 100px;
+            }
+        `} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation-delay: 0.4s;
+    }
 `;
 
 const BackButton = styled.a`
@@ -29,14 +125,40 @@ const BackButton = styled.a`
     margin-left: 4.2rem;
     cursor: pointer;
     max-width: 180px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateX(0);
+    position: relative;
+    overflow: hidden;
 
     &::before {
         content: "<-";
         padding-right: 0.5rem;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: inline-block;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 1rem;
+        left: 2rem;
+        width: 0;
+        height: 2px;
+        background: ${({ theme }) => theme.colors.primaryBlue};
+        transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     &:hover {
         color: ${({ theme }) => theme.colors.primaryBlue};
+        transform: translateX(-8px);
+
+        &::before {
+            transform: translateX(-4px);
+        }
+
+        &::after {
+            width: calc(100% - 4rem);
+        }
     }
 `;
 
@@ -45,6 +167,22 @@ const MiddleRow = styled.div`
     flex-direction: row;
     gap: 2rem;
     justify-content: center;
+
+    & > * {
+        opacity: 0;
+    }
+
+    & > *:nth-child(1) {
+        animation: ${slideInLeft} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+        animation-delay: 0.5s;
+    }
+
+    & > *:nth-child(2) {
+        animation: ${slideInRight} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+        animation-delay: 0.6s;
+    }
 `;
 
 export default function PublicCasesDetailsPage() {
@@ -53,6 +191,10 @@ export default function PublicCasesDetailsPage() {
 
     const { publicCases, loading, error, loadPublicCases, getPublicCaseById } =
         useCases();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const hasNoPublicCasesLoaded = !publicCases || publicCases.length === 0;

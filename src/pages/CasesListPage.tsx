@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import SearchBar from "../components/public-cases/SearchBar";
 import { useCases } from "../hooks/useCases";
 import type { CaseRecord } from "../types/Case";
@@ -9,11 +9,54 @@ import { useAuth } from "../hooks/useAuth";
 
 const PAGE_SIZE = 6;
 
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const slideInUp = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const slideInDown = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const scaleIn = keyframes`
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+`;
+
 const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     width: 100%;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const HeroSection = styled.section`
@@ -24,6 +67,7 @@ const HeroSection = styled.section`
     padding: 6rem 2rem 4rem;
     position: relative;
     background: #fefeff;
+    animation: ${slideInDown} 0.7s ease-out;
 `;
 
 const HeroContent = styled.div`
@@ -38,6 +82,7 @@ const HeroContent = styled.div`
 const HeroTitle = styled.div`
     text-align: center;
     margin-bottom: 2rem;
+    animation: ${slideInUp} 0.8s ease-out 0.1s backwards;
 `;
 
 const TitleLine1 = styled.h1`
@@ -68,12 +113,14 @@ const HeroDescription = styled.p`
     max-width: 800px;
     text-align: center;
     margin: 0 auto 3rem;
+    animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
 `;
 
 const SearchBarWrapper = styled.div`
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
+    animation: ${scaleIn} 0.8s ease-out 0.3s backwards;
 `;
 
 const ResultsSection = styled.div`
@@ -89,6 +136,7 @@ const BrowseHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    animation: ${slideInUp} 0.7s ease-out 0.4s backwards;
 `;
 
 const BrowseTitle = styled.div``;
@@ -152,12 +200,39 @@ const CasesList = styled.div`
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+
+    > * {
+        animation: ${scaleIn} 0.5s ease-out backwards;
+    }
+
+    > *:nth-child(1) {
+        animation-delay: 0.5s;
+    }
+    > *:nth-child(2) {
+        animation-delay: 0.55s;
+    }
+    > *:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    > *:nth-child(4) {
+        animation-delay: 0.65s;
+    }
+    > *:nth-child(5) {
+        animation-delay: 0.7s;
+    }
+    > *:nth-child(6) {
+        animation-delay: 0.75s;
+    }
+    > *:nth-child(n + 7) {
+        animation-delay: 0.8s;
+    }
 `;
 
 const LoadMoreWrapper = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const LoadMoreButton = styled.button`

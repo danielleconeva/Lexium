@@ -1,8 +1,36 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
+
+const slideInRight = keyframes`
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const slideInLeft = keyframes`
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInScale = keyframes`
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+`;
+
+const fadeInUp = keyframes`
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const PageWrapper = styled.div`
     display: flex;
@@ -29,12 +57,17 @@ const FormSection = styled.div`
     z-index: 2;
     max-width: 700px;
     flex: 1;
+
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: ${slideInRight} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        forwards;
+    animation-delay: 0.2s;
 `;
 
 const Divider = styled.div`
     width: 2px;
     height: 380px;
-
     background: linear-gradient(
         to bottom,
         rgba(0, 0, 0, 0) 0%,
@@ -42,7 +75,6 @@ const Divider = styled.div`
         rgba(92, 93, 95, 0.6) 60%,
         rgba(0, 0, 0, 0) 100%
     );
-
     border-radius: 20px;
     margin: 0 3rem;
 
@@ -51,6 +83,12 @@ const Divider = styled.div`
     @media (min-width: 1024px) {
         display: block;
     }
+
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    animation: ${fadeInScale} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation-delay: 0.4s;
 `;
 
 const TextSection = styled.div`
@@ -64,6 +102,23 @@ const TextSection = styled.div`
     @media (max-width: 1024px) {
         display: none;
     }
+
+    & > * {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: ${fadeInUp} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+    }
+
+    & > *:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    & > *:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    & > *:nth-child(3) {
+        animation-delay: 0.5s;
+    }
 `;
 
 const ContentContainer = styled.div`
@@ -72,7 +127,16 @@ const ContentContainer = styled.div`
     gap: 2rem;
     max-width: 1600px;
     width: 100%;
+
+    & > *:nth-child(3) {
+        opacity: 0;
+        transform: translateX(50px);
+        animation: ${slideInLeft} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+            forwards;
+        animation-delay: 0.3s;
+    }
 `;
+
 const BigTitle = styled.h1`
     font-size: 3.8rem;
     font-weight: 700;
@@ -81,6 +145,11 @@ const BigTitle = styled.h1`
     margin-top: -2rem;
     line-height: 0.8;
     letter-spacing: 2px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:hover {
+        transform: translateY(-4px);
+    }
 `;
 
 const SubTitle = styled.h2`
@@ -91,6 +160,11 @@ const SubTitle = styled.h2`
     line-height: 1.2;
     margin-top: -0.4rem;
     margin-bottom: 1rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:hover {
+        transform: translateY(-4px);
+    }
 `;
 
 const RightSubtitle = styled.p`
@@ -104,9 +178,11 @@ const RightSubtitle = styled.p`
 export default function LoginPage() {
     const { user } = useAuth();
     const navigate = useNavigate();
+
     useEffect(() => {
         if (user) navigate("/dashboard");
     }, [user]);
+
     return (
         <PageWrapper>
             <ContentContainer>
@@ -119,7 +195,6 @@ export default function LoginPage() {
                 <TextSection>
                     <BigTitle>Welcome</BigTitle>
                     <SubTitle>back</SubTitle>
-
                     <RightSubtitle>
                         Access your secure workspace and pick up your
                         responsibilities and carry on with your work in a

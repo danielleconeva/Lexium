@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import StatsBadges from "../components/dashboard/StatsBadges";
 import TaskProgressCard from "../components/dashboard/TaskProgressCard";
 import RecentCasesCard from "../components/dashboard/RecentCasesCard";
@@ -130,10 +130,53 @@ export default function DashboardPage() {
     );
 }
 
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const slideInUp = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const slideInLeft = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+`;
+
+const slideInRight = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+`;
+
 const PageWrapper = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     padding: 3rem 4rem 5rem 4rem;
+    animation: ${fadeIn} 0.6s ease-out;
 `;
 
 const WelcomeSection = styled.section`
@@ -142,10 +185,12 @@ const WelcomeSection = styled.section`
     border-radius: 2rem;
     display: flex;
     justify-content: space-between;
+    animation: ${slideInUp} 0.7s ease-out;
 `;
 
 const Left = styled.div`
     max-width: 60%;
+    animation: ${slideInLeft} 0.8s ease-out 0.1s backwards;
 `;
 
 const HeroTitle = styled.div`
@@ -183,6 +228,7 @@ const Right = styled.div`
     display: flex;
     gap: 1rem;
     align-items: center;
+    animation: ${slideInRight} 0.8s ease-out 0.2s backwards;
 `;
 
 const PrimaryBtn = styled(Link)`
@@ -311,12 +357,15 @@ const Grid = styled.div`
 
 const RecentCasesWrapper = styled.div`
     grid-area: left;
+    animation: ${slideInUp} 0.8s ease-out 0.3s backwards;
 `;
 
 const TaskProgressWrapper = styled.div`
     grid-area: top;
+    animation: ${slideInUp} 0.8s ease-out 0.4s backwards;
 `;
 
 const PendingTasksWrapper = styled.div`
     grid-area: bottom;
+    animation: ${slideInUp} 0.8s ease-out 0.5s backwards;
 `;

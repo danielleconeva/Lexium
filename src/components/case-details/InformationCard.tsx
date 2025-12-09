@@ -7,7 +7,7 @@ type InformationCardProps = {
 };
 
 export default function InformationCard({ caseData }: InformationCardProps) {
-    function formatDate(value?: string) {
+    function formatDate(value?: string | null) {
         if (!value) return "–";
         try {
             return new Date(value).toLocaleDateString("en-GB", {

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import SearchBar from "../components/public-cases/SearchBar";
 import { useCases } from "../hooks/useCases";
 import type { CaseRecord } from "../types/Case";
@@ -8,11 +8,54 @@ import { Filter } from "lucide-react";
 
 const PAGE_SIZE = 6;
 
+const fadeIn = keyframes`
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+`;
+
+const slideInUp = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const slideInDown = keyframes`
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+`;
+
+const scaleIn = keyframes`
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+`;
+
 const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     width: 100%;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const HeroSection = styled.section`
@@ -23,6 +66,7 @@ const HeroSection = styled.section`
     padding: 6rem 2rem 4rem;
     position: relative;
     background: #fefeff;
+    animation: ${slideInDown} 0.7s ease-out;
 `;
 
 const HeroContent = styled.div`
@@ -37,6 +81,7 @@ const HeroContent = styled.div`
 const HeroTitle = styled.div`
     text-align: center;
     margin-bottom: 2rem;
+    animation: ${slideInUp} 0.8s ease-out 0.1s backwards;
 `;
 
 const TitleLine1 = styled.h1`
@@ -67,12 +112,14 @@ const HeroDescription = styled.p`
     max-width: 800px;
     text-align: center;
     margin: 0 auto 3rem;
+    animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
 `;
 
 const SearchBarWrapper = styled.div`
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
+    animation: ${scaleIn} 0.8s ease-out 0.3s backwards;
 `;
 
 const ResultsSection = styled.div`
@@ -88,6 +135,7 @@ const BrowseHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    animation: ${slideInUp} 0.7s ease-out 0.4s backwards;
 `;
 
 const BrowseTitle = styled.div``;
@@ -151,35 +199,70 @@ const CasesList = styled.div`
     display: grid;
     gap: 1.5rem;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+
+    > * {
+        animation: ${scaleIn} 0.5s ease-out backwards;
+    }
+
+    > *:nth-child(1) {
+        animation-delay: 0.5s;
+    }
+    > *:nth-child(2) {
+        animation-delay: 0.55s;
+    }
+    > *:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    > *:nth-child(4) {
+        animation-delay: 0.65s;
+    }
+    > *:nth-child(5) {
+        animation-delay: 0.7s;
+    }
+    > *:nth-child(6) {
+        animation-delay: 0.75s;
+    }
+    > *:nth-child(n + 7) {
+        animation-delay: 0.8s;
+    }
 `;
 
 const LoadMoreWrapper = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+    animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const LoadMoreButton = styled.button`
-    padding: 0.75rem 2.5rem;
+    font-family: ${({ theme }) => theme.fonts.main};
+    padding: 0.9rem 2.3rem;
     border-radius: 999px;
-    border: 1px solid #3b82f6;
-    background: white;
-    color: #1d4ed8;
-    font-size: 0.95rem;
-    font-weight: 600;
+    border: 1px solid #3d70fe;
+    background: #ffffff;
+    color: #3d70fe;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease,
+        box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease;
 
     &:hover {
         background: #eff6ff;
         border-color: #1d4ed8;
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
-        transform: translateY(-2px);
+        color: #1d4ed8;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+        transform: translateY(-1px);
     }
 
     &:active {
         transform: translateY(0);
-        box-shadow: none;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.06);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #1d4ed8;
+        outline-offset: 2px;
     }
 `;
 
@@ -239,10 +322,12 @@ export default function PublicCasesPage() {
                         <TitleLine1>Follow Legal Cases</TitleLine1>
                         <TitleLine2>Effortlessly</TitleLine2>
                     </HeroTitle>
+
                     <HeroDescription>
                         Monitor developments and access essential case details
                         instantly.
                     </HeroDescription>
+
                     <SearchBarWrapper>
                         <SearchBar onSearch={handleSearchCases} />
                     </SearchBarWrapper>
@@ -264,65 +349,36 @@ export default function PublicCasesPage() {
                             <FilterIcon />
                             Filter:
                         </FilterLabel>
+
                         <FilterButtons>
-                            <FilterButton
-                                $active={activeFilter === "All Cases"}
-                                onClick={() => handleFilterChange("All Cases")}
-                            >
-                                All Cases
-                            </FilterButton>
-                            <FilterButton
-                                $active={activeFilter === "Civil"}
-                                onClick={() => handleFilterChange("Civil")}
-                            >
-                                Civil
-                            </FilterButton>
-                            <FilterButton
-                                $active={activeFilter === "Commercial"}
-                                onClick={() => handleFilterChange("Commercial")}
-                            >
-                                Commercial
-                            </FilterButton>
-                            <FilterButton
-                                $active={activeFilter === "Administrative"}
-                                onClick={() =>
-                                    handleFilterChange("Administrative")
-                                }
-                            >
-                                Administrative
-                            </FilterButton>
-                            <FilterButton
-                                $active={activeFilter === "Criminal"}
-                                onClick={() => handleFilterChange("Criminal")}
-                            >
-                                Criminal
-                            </FilterButton>
-                            <FilterButton
-                                $active={
-                                    activeFilter === "Administrative-Criminal"
-                                }
-                                onClick={() =>
-                                    handleFilterChange(
-                                        "Administrative-Criminal"
-                                    )
-                                }
-                            >
-                                Administrative-Criminal
-                            </FilterButton>
+                            {[
+                                "All Cases",
+                                "Civil",
+                                "Commercial",
+                                "Administrative",
+                                "Criminal",
+                                "Administrative-Criminal",
+                            ].map((filter) => (
+                                <FilterButton
+                                    key={filter}
+                                    $active={activeFilter === filter}
+                                    onClick={() => handleFilterChange(filter)}
+                                >
+                                    {filter}
+                                </FilterButton>
+                            ))}
                         </FilterButtons>
                     </FilterSection>
                 </BrowseHeader>
 
                 {loading && <p>Loading cases...</p>}
                 {error && <p>Something went wrong.</p>}
+
                 {!loading && !error && (
                     <>
                         <CasesList>
-                            {visibleCases.map((singlePublicCase) => (
-                                <PublicCaseCard
-                                    key={singlePublicCase.id}
-                                    caseData={singlePublicCase}
-                                />
+                            {visibleCases.map((c) => (
+                                <PublicCaseCard key={c.id} caseData={c} />
                             ))}
                         </CasesList>
 

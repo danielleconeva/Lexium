@@ -10,7 +10,7 @@ export default function RecentTasksCard({
     tasks,
     caseMap,
 }: RecentTasksCardProps) {
-    function formatDate(value?: string) {
+    function formatDate(value?: string | null) {
         if (!value) return "–";
         try {
             return new Date(value)

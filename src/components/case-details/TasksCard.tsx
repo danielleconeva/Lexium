@@ -9,7 +9,7 @@ type TasksCardProps = {
 };
 
 export default function TasksCard({ tasksData, caseId }: TasksCardProps) {
-    function formatDate(value?: string) {
+    function formatDate(value?: string | null) {
         if (!value) return "–";
         try {
             return new Date(value).toLocaleDateString("en-GB", {
