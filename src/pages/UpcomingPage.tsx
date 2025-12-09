@@ -199,7 +199,11 @@ export default function UpcomingPage() {
                 hearingDate >= today && hearingDate <= thirtyDaysFromToday;
 
             if (isWithin30Days) {
-                const dateKey = hearingDate.toISOString().slice(0, 10);
+                const dateKey = [
+                    hearingDate.getFullYear(),
+                    String(hearingDate.getMonth() + 1).padStart(2, "0"),
+                    String(hearingDate.getDate()).padStart(2, "0"),
+                ].join("-");
 
                 if (!groupedHearings[dateKey]) {
                     groupedHearings[dateKey] = [];
