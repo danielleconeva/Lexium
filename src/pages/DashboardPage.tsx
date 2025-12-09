@@ -65,7 +65,7 @@ export default function DashboardPage() {
         () =>
             [...firmCases]
                 .sort((a, b) => b.createdAt - a.createdAt)
-                .slice(0, 10),
+                .slice(0, 7),
         [firmCases]
     );
 
