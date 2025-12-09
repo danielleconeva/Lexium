@@ -184,29 +184,6 @@ const ViewButton = styled.button`
     }
 `;
 
-function computeNextHearing(hearings?: Array<{ date: string; time: string }>) {
-    if (!hearings || hearings.length === 0) return undefined;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const upcoming = hearings
-        .filter((h) => h.date && h.date.trim() !== "")
-        .filter((h) => {
-            const d = new Date(h.date);
-            d.setHours(0, 0, 0, 0);
-            return d.getTime() >= today.getTime();
-        });
-
-    if (upcoming.length === 0) return undefined;
-
-    const sorted = [...upcoming].sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
-
-    return sorted[0].date;
-}
-
 type PublicCaseCardProps = {
     caseData: CaseRecord;
 };
@@ -217,7 +194,6 @@ export default function PublicCaseCard({ caseData }: PublicCaseCardProps) {
     const handleViewCase = () => {
         navigate(`/public-cases/${caseData.id}`);
     };
-    const nextHearing = computeNextHearing(caseData.hearingsChronology);
 
     return (
         <CardWrapper>
@@ -248,13 +224,15 @@ export default function PublicCaseCard({ caseData }: PublicCaseCardProps) {
                     </InfoIcon>
                     <InfoText>{caseData.court}</InfoText>
                 </InfoRow>
-                {nextHearing && (
+                {caseData.initiationDate && (
                     <InfoRow>
                         <InfoIcon>
                             <Calendar />
                         </InfoIcon>
                         <InfoText>
-                            {new Date(nextHearing).toLocaleDateString("en-US", {
+                            {new Date(
+                                caseData.initiationDate
+                            ).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
                                 year: "numeric",

@@ -281,14 +281,14 @@ export default function CaseCard({ caseData, onStarToggle }: CaseCardProps) {
                     </InfoIcon>
                     <InfoText>{caseData.court}</InfoText>
                 </InfoRow>
-                {caseData.nextHearingDate && (
+                {caseData.initiationDate && (
                     <InfoRow>
                         <InfoIcon>
                             <Calendar />
                         </InfoIcon>
                         <InfoText>
                             {new Date(
-                                caseData.nextHearingDate
+                                caseData.initiationDate
                             ).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
