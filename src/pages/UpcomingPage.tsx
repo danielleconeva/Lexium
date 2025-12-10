@@ -172,6 +172,10 @@ export default function UpcomingPage() {
     const { user } = useAuth();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (user?.uid) loadFirmCases(user.uid);
     }, [loadFirmCases]);
 

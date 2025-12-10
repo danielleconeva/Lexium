@@ -277,6 +277,10 @@ export default function PublicCasesPage() {
     const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         loadPublicCases();
     }, [loadPublicCases]);
 

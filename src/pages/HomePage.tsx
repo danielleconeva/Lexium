@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { Zap, Briefcase, Calendar, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const steps = [
     {
@@ -529,6 +530,10 @@ const CTAButton = styled(Link)`
 `;
 
 export default function HomePage() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <PageWrapper>
             <HeroSection>

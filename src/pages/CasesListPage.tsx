@@ -280,6 +280,10 @@ export default function CasesListPage() {
     const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (!user) return;
         loadFirmCases(user?.uid);
     }, [user, loadFirmCases]);

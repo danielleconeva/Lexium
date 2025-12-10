@@ -76,7 +76,7 @@ export const createCase = createAsyncThunk<
     },
     { rejectValue: string }
 >("cases/createCase", async ({ caseData, firmUser }, thunkAPI) => {
-    console.log("🔥 [THUNK START] createCase called with:", {
+    console.log("[THUNK START] createCase called with:", {
         caseData,
         firmUser,
     });

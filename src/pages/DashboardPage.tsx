@@ -17,6 +17,10 @@ export default function DashboardPage() {
     const { firmTasks, loadFirmTasks } = useTasks();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (!user?.uid) return;
         loadFirmCases(user.uid);
     }, [user?.uid, loadFirmCases]);

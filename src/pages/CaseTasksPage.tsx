@@ -71,6 +71,10 @@ export default function CaseTasksPage() {
     const caseData = getFirmCaseById(caseId!);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         console.log("CaseTasksPage mounted");
 
         if (caseId) {
