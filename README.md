@@ -2,7 +2,18 @@
 
 Lexium is a **legal case management portal for law firms**, built with **React + TypeScript + Redux Toolkit** and integrated with the **Firebase ecosystem** (**Firebase Authentication**, **Cloud Firestore**, **Firebase Hosting**).
 
-Each law firm operates in its own isolated workspace for **cases, hearings, and tasks**, while optionally publishing **anonymised case summaries** to a public catalogue.
+Each law firm operates in its own isolated workspace for **cases, hearings and tasks**, while optionally publishing **anonymised case summaries** to a public catalogue.
+
+---
+
+### **Test Account**
+
+For demonstration purposes, Lexium includes a preconfigured test firm account:
+
+-   **Email:** `apexlegal@mail.bg`
+-   **Password:** `123456`
+
+This account provides full access to the sample firm workspace, including cases, tasks and upcoming hearings.
 
 ---
 
