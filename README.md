@@ -6,6 +6,15 @@ Each law firm operates in its own isolated workspace for **cases, hearings and t
 
 ---
 
+### Live Deployment
+
+Lexium is deployed on **Firebase Hosting** and publicly accessible at:  
+👉 **https://lexium-7e457.web.app**
+
+The production build is served through Firebase’s global CDN, ensuring fast load times, secure routing, and full support for client-side navigation with React Router.
+
+---
+
 ### **Test Account**
 
 For demonstration purposes, Lexium includes a preconfigured test firm account:
