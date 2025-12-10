@@ -140,10 +140,11 @@ const TaskItem = styled.div<{ $isActive: boolean }>`
 `;
 
 const TaskTitle = styled.div`
-    font-size: 1.1rem;
+    font-size: 1.04rem;
     font-weight: 600;
     color: #525254;
     margin-bottom: 0.3rem;
+    max-width: 550px;
 `;
 
 const TaskMeta = styled.div`
@@ -160,7 +161,7 @@ const DueText = styled.div`
 const StatusPill = styled.div<{ $status: string }>`
     padding: 0.4rem 1rem;
     border-radius: 999px;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 500;
     text-transform: capitalize;
 
