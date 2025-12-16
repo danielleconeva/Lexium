@@ -14,6 +14,22 @@ const CardWrapper = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     box-shadow: 0 8px 17px rgba(15, 23, 42, 0.06);
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const CardLeft = styled.div`
@@ -21,6 +37,10 @@ const CardLeft = styled.div`
     flex-direction: column;
     gap: 0.65rem;
     flex: 1;
+
+    @media (max-width: 640px) {
+        width: 100%;
+    }
 `;
 
 const CardRight = styled.div`
@@ -28,12 +48,21 @@ const CardRight = styled.div`
     flex-direction: column;
     align-items: flex-end;
     gap: 0.35rem;
+
+    @media (max-width: 640px) {
+        align-items: flex-start;
+    }
 `;
 
 const BadgeRow = styled.div`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 `;
 
 const StatusBadge = styled.span<{ $status: string }>`
@@ -81,6 +110,10 @@ const TypeText = styled.span<{ $type: string }>`
     font-size: 0.9rem;
     font-weight: 500;
     color: #64748b;
+
+    @media (max-width: 640px) {
+        font-size: 0.85rem;
+    }
 `;
 
 const CaseNumberAndYear = styled.h3`
@@ -90,6 +123,10 @@ const CaseNumberAndYear = styled.h3`
     margin: 0.25rem 0;
     letter-spacing: -0.03rem;
     line-height: 1.2;
+
+    @media (max-width: 640px) {
+        font-size: 1.6rem;
+    }
 `;
 
 const FirmInfo = styled.div`
@@ -117,6 +154,10 @@ const FirmName = styled.span`
     font-size: 1rem;
     font-weight: 500;
     color: #475569;
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+    }
 `;
 
 const InitiatedLabel = styled.div`
@@ -138,6 +179,10 @@ const InitiatedDate = styled.div`
     font-size: 1.5rem;
     font-weight: 600;
     color: #4b4b4c;
+
+    @media (max-width: 640px) {
+        font-size: 1.3rem;
+    }
 `;
 
 type GeneralInfoCardProps = {

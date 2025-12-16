@@ -10,6 +10,21 @@ const CardContainer = styled.div`
     max-width: 580px;
     box-shadow: 2px 8px 17px rgba(15, 23, 42, 0.06);
     border: 1px solid #eef2f6;
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const CardHeader = styled.div`
