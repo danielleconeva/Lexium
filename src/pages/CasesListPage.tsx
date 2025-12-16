@@ -10,12 +10,8 @@ import { useAuth } from "../hooks/useAuth";
 const PAGE_SIZE = 6;
 
 const fadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 `;
 
 const slideInUp = keyframes`
@@ -51,7 +47,7 @@ const scaleIn = keyframes`
     }
 `;
 
-const PageWrapper = styled.div`
+export const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -59,7 +55,7 @@ const PageWrapper = styled.div`
     animation: ${fadeIn} 0.5s ease-out;
 `;
 
-const HeroSection = styled.section`
+export const HeroSection = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,33 +64,57 @@ const HeroSection = styled.section`
     position: relative;
     background: #fefeff;
     animation: ${slideInDown} 0.7s ease-out;
+
+    @media (max-width: 640px) {
+        padding: 5.5rem 1.25rem 3rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        padding: 5rem 2rem 3.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 7rem 2rem 5rem;
+    }
 `;
 
-const HeroContent = styled.div`
+export const HeroContent = styled.div`
     max-width: 1200px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+
+    @media (min-width: 1920px) {
+        max-width: 1400px;
+    }
 `;
 
-const HeroTitle = styled.div`
+export const HeroTitle = styled.div`
     text-align: center;
     margin-bottom: 2rem;
     animation: ${slideInUp} 0.8s ease-out 0.1s backwards;
 `;
 
-const TitleLine1 = styled.h1`
+export const TitleLine1 = styled.h1`
     font-size: 3.2rem;
     font-weight: 700;
     line-height: 1.1;
     color: #0a0a0a;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        font-size: 2.7rem;
+    }
 `;
 
-const TitleLine2 = styled.h1`
+export const TitleLine2 = styled.h1`
     font-size: 3.2rem;
     font-weight: 700;
     line-height: 1.1;
@@ -104,9 +124,17 @@ const TitleLine2 = styled.h1`
     background-clip: text;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        font-size: 2.7rem;
+    }
 `;
 
-const HeroDescription = styled.p`
+export const HeroDescription = styled.p`
     font-size: 1.2rem;
     line-height: 1.6;
     color: #666;
@@ -114,53 +142,84 @@ const HeroDescription = styled.p`
     text-align: center;
     margin: 0 auto 3rem;
     animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
 `;
 
-const SearchBarWrapper = styled.div`
+export const SearchBarWrapper = styled.div`
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
     animation: ${scaleIn} 0.8s ease-out 0.3s backwards;
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+    }
 `;
 
-const ResultsSection = styled.div`
+export const ResultsSection = styled.div`
     padding: 3rem 3rem 4rem 3rem;
     max-width: 1400px;
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.7rem 3rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        padding: 2.5rem 2rem 3.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        max-width: 1700px;
+    }
 `;
 
-const BrowseHeader = styled.div`
+export const BrowseHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
     animation: ${slideInUp} 0.7s ease-out 0.4s backwards;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
 `;
 
-const BrowseTitle = styled.div``;
+export const BrowseTitle = styled.div``;
 
-const BrowseHeading = styled.h2`
+export const BrowseHeading = styled.h2`
     font-size: 2rem;
     font-weight: 700;
     color: #0a0a0a;
     margin: 0 0 0.5rem 0;
 `;
 
-const BrowseSubtext = styled.p`
+export const BrowseSubtext = styled.p`
     font-size: 1rem;
     color: #666;
     margin: 0;
 `;
 
-const FilterSection = styled.div`
+export const FilterSection = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+    }
 `;
 
-const FilterLabel = styled.div`
+export const FilterLabel = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -168,17 +227,21 @@ const FilterLabel = styled.div`
     font-size: 1rem;
 `;
 
-const FilterIcon = styled(Filter)`
+export const FilterIcon = styled(Filter)`
     width: 20px;
     height: 20px;
 `;
 
-const FilterButtons = styled.div`
+export const FilterButtons = styled.div`
     display: flex;
     gap: 0.75rem;
+
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+    }
 `;
 
-const FilterButton = styled.button<{ $active?: boolean }>`
+export const FilterButton = styled.button<{ $active?: boolean }>`
     padding: 0.625rem 1.5rem;
     border-radius: 999px;
     border: 1px solid ${(props) => (props.$active ? "#3b82f6" : "#e2e8f0")};
@@ -195,7 +258,7 @@ const FilterButton = styled.button<{ $active?: boolean }>`
     }
 `;
 
-const CasesList = styled.div`
+export const CasesList = styled.div`
     margin-top: 3rem;
     display: grid;
     gap: 1.5rem;
@@ -226,16 +289,28 @@ const CasesList = styled.div`
     > *:nth-child(n + 7) {
         animation-delay: 0.8s;
     }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1920px) {
+        grid-template-columns: repeat(4, minmax(380px, 1fr));
+    }
 `;
 
-const LoadMoreWrapper = styled.div`
+export const LoadMoreWrapper = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 2rem;
     animation: ${fadeIn} 0.5s ease-out;
 `;
 
-const LoadMoreButton = styled.button`
+export const LoadMoreButton = styled.button`
     font-family: ${({ theme }) => theme.fonts.main};
     padding: 0.9rem 2.3rem;
     border-radius: 999px;

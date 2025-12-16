@@ -102,8 +102,6 @@ export default function CaseDetailsPage() {
     }, []);
 
     useEffect(() => {
-        console.log("CaseDetailsPage mounted");
-
         if (caseIdFromParams) {
             loadCaseTasks(caseIdFromParams);
         }
@@ -264,6 +262,10 @@ const PageWrapper = styled.div`
     overflow-x: hidden;
     padding: 3rem 2rem 4rem 2rem;
 
+    @media (max-width: 640px) {
+        padding: 2rem 1.25rem 3rem;
+    }
+
     & > * {
         opacity: 0;
         animation: ${fadeInUp} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
@@ -296,6 +298,11 @@ const Heading = styled.h3`
     color: #0a0a0a;
     margin: 1rem 0 0.5rem 6.5rem;
     position: relative;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        text-align: center;
+    }
 `;
 
 const BackButton = styled.a`
@@ -310,6 +317,11 @@ const BackButton = styled.a`
     transform: translateX(0);
     position: relative;
     overflow: hidden;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        padding-left: 0;
+    }
 
     &::before {
         content: "<-";
@@ -338,6 +350,11 @@ const MainContentWrapper = styled.div`
     gap: 2rem;
     padding: 3rem 5.3rem;
     justify-content: center;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        padding: 2.5rem 0;
+    }
 `;
 
 const LeftColumn = styled.div`
@@ -345,6 +362,13 @@ const LeftColumn = styled.div`
     flex-direction: column;
     flex: 2;
     gap: 3rem;
+
+    @media (max-width: 1024px) {
+        width: 100%;
+        max-width: 1100px;
+        align-items: center;
+        margin: 0 auto;
+    }
 
     & > * {
         opacity: 0;
@@ -368,6 +392,19 @@ const RightColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        width: 100%;
+        flex-direction: row;
+        max-width: 1100px;
+        align-items: center;
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    @media (max-width: 640px) {
+        width: 100%;
+    }
 
     & > * {
         opacity: 0;

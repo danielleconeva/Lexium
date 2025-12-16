@@ -386,13 +386,20 @@ export default function CaseEditPage() {
         </PageWrapper>
     );
 }
-
 const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
     padding: 3rem 8rem 4rem 8rem;
     animation: ${fadeIn} 0.5s ease-out;
+
+    @media (max-width: 1024px) {
+        padding: 3rem 3rem 4rem 3rem;
+    }
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.25rem 3rem 1.25rem;
+    }
 `;
 
 const BackButton = styled.a`
@@ -413,6 +420,11 @@ const BackButton = styled.a`
     &:hover {
         color: ${({ theme }) => theme.colors.primaryBlue};
     }
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        padding-left: 0;
+    }
 `;
 
 const HeadingSection = styled.div`
@@ -422,6 +434,13 @@ const HeadingSection = styled.div`
     align-items: center;
     margin-right: 5rem;
     animation: ${slideInDown} 0.7s ease-out 0.1s backwards;
+
+    @media (max-width: 1024px) {
+        margin-right: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+    }
 `;
 
 const Heading = styled.h3`
@@ -429,6 +448,15 @@ const Heading = styled.h3`
     font-weight: 700;
     color: #0a0a0a;
     margin: 1rem 0 0.5rem 6.5rem;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    @media (max-width: 640px) {
+        font-size: 1.8rem;
+    }
 `;
 
 const BtnsSection = styled.div`
@@ -436,6 +464,10 @@ const BtnsSection = styled.div`
     flex-direction: row;
     align-items: center;
     gap: 1.8rem;
+
+    @media (max-width: 640px) {
+        gap: 1.25rem;
+    }
 `;
 
 const MainSection = styled.div`
@@ -532,6 +564,10 @@ const StarSection = styled.div`
     align-items: center;
     gap: 0.75rem;
     margin-right: 2.2rem;
+
+    @media (max-width: 1024px) {
+        margin-right: 0;
+    }
 `;
 
 const StarButton = styled.button<{ $active: boolean }>`
@@ -576,12 +612,24 @@ const BottomSection = styled.div`
     padding-top: 2rem;
     padding: 1rem 4rem;
     animation: ${slideInUp} 0.7s ease-out 0.7s backwards;
+
+    @media (max-width: 1024px) {
+        margin: 2.5rem 0 0 0;
+        padding: 1.5rem 0;
+        flex-direction: column;
+        gap: 2rem;
+    }
 `;
 
 const RightButtons = styled.div`
     display: flex;
     align-items: center;
     gap: 1.5rem;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        width: 100%;
+    }
 `;
 
 const SubmitButton = styled.button`
@@ -600,6 +648,11 @@ const SubmitButton = styled.button`
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    @media (max-width: 640px) {
+        width: 100%;
+        justify-content: center;
+    }
 
     &:disabled {
         opacity: 0.5;
@@ -634,6 +687,10 @@ const ClearButton = styled.button`
     position: relative;
     overflow: hidden;
 
+    @media (max-width: 640px) {
+        width: 100%;
+    }
+
     &::before {
         content: "";
         position: absolute;
@@ -649,7 +706,6 @@ const ClearButton = styled.button`
         );
         transition: left 0.5s;
     }
-
     &:hover {
         background: rgba(255, 255, 255, 0.25);
         border-color: rgba(255, 255, 255, 0.4);
@@ -666,7 +722,6 @@ const ClearButton = styled.button`
     &:hover::before {
         left: 100%;
     }
-
     &:active {
         transform: translateY(-1px);
         background: rgba(255, 255, 255, 0.2);
