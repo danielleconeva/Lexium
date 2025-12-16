@@ -48,10 +48,8 @@ export default function DashboardPage() {
             openCases: firmCases.filter(
                 (c) => c.status.toLowerCase() === "open"
             ).length,
-
             pendingTasks,
             totalCases,
-
             completionRate:
                 totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0,
         };
@@ -181,6 +179,18 @@ const PageWrapper = styled.div`
     margin: 0 auto;
     padding: 3rem 4rem 5rem 4rem;
     animation: ${fadeIn} 0.6s ease-out;
+
+    @media (max-width: 1024px) {
+        padding: 2.5rem 2rem 4rem;
+    }
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.25rem 3rem;
+    }
+
+    @media (min-width: 1920px) {
+        max-width: 1500px;
+    }
 `;
 
 const WelcomeSection = styled.section`
@@ -190,11 +200,22 @@ const WelcomeSection = styled.section`
     display: flex;
     justify-content: space-between;
     animation: ${slideInUp} 0.7s ease-out;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
+    }
 `;
 
 const Left = styled.div`
     max-width: 60%;
     animation: ${slideInLeft} 0.8s ease-out 0.1s backwards;
+
+    @media (max-width: 1024px) {
+        max-width: 100%;
+    }
 `;
 
 const HeroTitle = styled.div`
@@ -208,6 +229,10 @@ const TitleLine1 = styled.h1`
     color: #0a0a0a;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.4rem;
+    }
 `;
 
 const TitleLine2 = styled.h1`
@@ -219,6 +244,10 @@ const TitleLine2 = styled.h1`
     -webkit-text-fill-color: transparent;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.4rem;
+    }
 `;
 
 const HeroDescription = styled.p`
@@ -226,6 +255,10 @@ const HeroDescription = styled.p`
     line-height: 1.6;
     color: #666;
     max-width: 800px;
+
+    @media (max-width: 640px) {
+        font-size: 1.05rem;
+    }
 `;
 
 const Right = styled.div`
@@ -233,6 +266,11 @@ const Right = styled.div`
     gap: 1rem;
     align-items: center;
     animation: ${slideInRight} 0.8s ease-out 0.2s backwards;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        width: 100%;
+    }
 `;
 
 const PrimaryBtn = styled(Link)`
@@ -357,6 +395,14 @@ const Grid = styled.div`
         "left top"
         "left bottom";
     gap: 2rem;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "left"
+            "top"
+            "bottom";
+    }
 `;
 
 const RecentCasesWrapper = styled.div`

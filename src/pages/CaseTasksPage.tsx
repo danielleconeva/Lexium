@@ -10,56 +10,28 @@ import type { TaskRecord } from "../types/Task";
 import { useAuth } from "../hooks/useAuth";
 
 const fadeIn = keyframes`
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 `;
 
 const slideInUp = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 `;
 
 const slideInDown = keyframes`
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 `;
 
 const slideInLeft = keyframes`
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
 `;
 
 const slideInRight = keyframes`
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
 `;
 
 export default function CaseTasksPage() {
@@ -70,24 +42,6 @@ export default function CaseTasksPage() {
     const { getFirmCaseById, loadFirmCases } = useCases();
     const caseData = getFirmCaseById(caseId!);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
-        console.log("CaseTasksPage mounted");
-
-        if (caseId) {
-            loadCaseTasks(caseId);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (user?.uid && !caseData) {
-            loadFirmCases(user.uid);
-        }
-    }, [user, caseData, loadFirmCases]);
-
     const { caseTasks, loadCaseTasks } = useTasks();
 
     const [openModal, setOpenModal] = useState<null | {
@@ -96,9 +50,21 @@ export default function CaseTasksPage() {
     }>(null);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         if (caseId) loadCaseTasks(caseId);
     }, [caseId, loadCaseTasks]);
 
+    useEffect(() => {
+        if (user?.uid && !caseData) {
+            loadFirmCases(user.uid);
+        }
+    }, [user, caseData, loadFirmCases]);
+    useEffect(() => {
+        if (caseId) loadCaseTasks(caseId);
+    }, [caseId, loadCaseTasks]);
     function handleBackNavigation() {
         navigate(-1);
     }
@@ -116,6 +82,7 @@ export default function CaseTasksPage() {
             </BackButton>
 
             <Heading>Tasks</Heading>
+
             <HeroDescription>
                 {caseData.caseNumber}/{caseData.caseYear} –{" "}
                 {caseData.clientName}
@@ -163,8 +130,12 @@ const PageWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    padding: 3rem 2rem 4rem 2rem;
+    padding: 3rem 2rem 4rem;
     animation: ${fadeIn} 0.5s ease-out;
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.25rem 3rem;
+    }
 `;
 
 const Heading = styled.h3`
@@ -173,6 +144,11 @@ const Heading = styled.h3`
     color: #0a0a0a;
     margin: 1rem 0 0.5rem 6.5rem;
     animation: ${slideInDown} 0.7s ease-out 0.1s backwards;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        text-align: center;
+    }
 `;
 
 const BackButton = styled.a`
@@ -184,6 +160,11 @@ const BackButton = styled.a`
     cursor: pointer;
     max-width: 180px;
     animation: ${slideInRight} 0.6s ease-out backwards;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        padding-left: 0;
+    }
 
     &::before {
         content: "<-";
@@ -202,6 +183,12 @@ const HeroDescription = styled.p`
     margin-left: 6.5rem;
     margin-bottom: -3rem;
     animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
 `;
 
 const TopActions = styled.div`
@@ -211,6 +198,12 @@ const TopActions = styled.div`
     padding-right: 6rem;
     margin-top: 0.5rem;
     animation: ${slideInLeft} 0.7s ease-out 0.3s backwards;
+
+    @media (max-width: 1024px) {
+        justify-content: center;
+        padding-right: 0;
+        margin-top: 1rem;
+    }
 `;
 
 const NewTaskButton = styled.button`
@@ -221,7 +214,6 @@ const NewTaskButton = styled.button`
     font-weight: 500;
     color: white;
     margin-right: 8rem;
-
     background: linear-gradient(135deg, #3d70fe 0%, #667eea 100%);
     border: none;
     border-radius: 50px;
@@ -233,9 +225,13 @@ const NewTaskButton = styled.button`
         0 3px 12px rgba(102, 126, 234, 0.2), inset 0 -2px 8px rgba(0, 0, 0, 0.1),
         inset 0 2px 8px rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     text-decoration: none;
-
     overflow: hidden;
+
+    @media (max-width: 1024px) {
+        margin-right: 0;
+    }
 
     &::before {
         content: "";
@@ -264,7 +260,6 @@ const NewTaskButton = styled.button`
     &:hover::before {
         left: 100%;
     }
-
     &:active {
         transform: translateY(-1px) scale(1.01);
     }
@@ -289,5 +284,11 @@ const MainContentWrapper = styled.div`
     }
     & > *:nth-child(3) {
         animation-delay: 0.6s;
+    }
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        padding: 2.5rem 0;
+        align-items: center;
     }
 `;

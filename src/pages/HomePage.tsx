@@ -62,6 +62,7 @@ const PageWrapper = styled.div`
 const HeroSection = styled.section`
     height: 100vh;
     max-height: 100vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,6 +85,24 @@ const HeroSection = styled.section`
             transparent 96%
         ),
         #fefeff;
+
+    @media (min-width: 850px) and (max-width: 1026px) {
+        height: 55vh;
+        max-height: 55vh;
+        margin-top: -2rem;
+    }
+
+    @media (min-width: 1920px) {
+        height: 100vh;
+        max-height: 100vh;
+        padding: 0rem 3rem;
+    }
+
+    @media (max-width: 848px) {
+        height: 75vh !important;
+        max-height: 75vh !important;
+        margin-top: -2rem;
+    }
 `;
 
 const HeroTitle = styled.div`
@@ -92,6 +111,14 @@ const HeroTitle = styled.div`
     opacity: 0;
     animation: ${fadeSlideUp} 0.8s ease-out forwards;
     animation-delay: 0.1s;
+
+    @media (max-width: 640px) {
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        margin-bottom: 2.5rem;
+    }
 `;
 
 const TitleLine1 = styled.h1`
@@ -101,6 +128,18 @@ const TitleLine1 = styled.h1`
     color: #0a0a0a;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 2.8rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 4.5rem;
+    }
 `;
 
 const TitleLine2 = styled.h1`
@@ -113,6 +152,18 @@ const TitleLine2 = styled.h1`
     background-clip: text;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 2.8rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 4.5rem;
+    }
 `;
 
 const HeroDescription = styled.p`
@@ -126,6 +177,24 @@ const HeroDescription = styled.p`
     opacity: 0;
     animation: ${fadeSlideUp} 0.8s ease-out forwards;
     animation-delay: 0.25s;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin: 0 auto 2rem;
+        max-width: 100%;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1.1rem;
+        max-width: 650px;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 1.4rem;
+        max-width: 1000px;
+        margin: 0 auto 3rem;
+    }
 `;
 
 const ButtonGroup = styled.div`
@@ -138,6 +207,18 @@ const ButtonGroup = styled.div`
     opacity: 0;
     animation: ${fadeSlideUp} 0.8s ease-out forwards;
     animation-delay: 0.4s;
+
+    @media (max-width: 640px) {
+        gap: 0.75rem;
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    @media (min-width: 1920px) {
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
 `;
 
 const PrimaryButton = styled(Link)`
@@ -153,6 +234,7 @@ const PrimaryButton = styled(Link)`
     cursor: pointer;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     box-shadow: 0 8px 24px rgba(61, 90, 254, 0.3),
         0 3px 12px rgba(102, 126, 234, 0.2), inset 0 -2px 8px rgba(0, 0, 0, 0.1),
@@ -192,6 +274,16 @@ const PrimaryButton = styled(Link)`
 
     &:active {
         transform: translateY(-1px) scale(1.01);
+    }
+
+    @media (max-width: 640px) {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 1.2rem 3rem;
+        font-size: 1.15rem;
     }
 `;
 
@@ -252,6 +344,17 @@ const SecondaryButton = styled(Link)`
         transform: translateY(-1px);
         background: rgba(255, 255, 255, 0.2);
     }
+
+    @media (max-width: 640px) {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+        margin: 0 auto;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 1.2rem 3rem;
+        font-size: 1.15rem;
+    }
 `;
 
 const BrandName = styled.h2`
@@ -271,22 +374,71 @@ const BrandName = styled.h2`
     opacity: 0;
     animation: ${fadeScale} 1.1s ease-out forwards,
         ${gentleFloat} 6s ease-in-out infinite 1.1s;
+
+    @media (max-width: 640px) {
+        font-size: 5.5rem;
+        letter-spacing: 0.3rem;
+        margin-top: 2rem;
+        margin-bottom: -6rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1026px) {
+        font-size: 15rem;
+        letter-spacing: 0.7rem;
+        margin-top: 2.5rem;
+        margin-bottom: -7rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 20rem;
+        letter-spacing: 1.5rem;
+        margin-top: 4rem;
+        margin-bottom: -8rem;
+    }
 `;
 
 const Section = styled.section`
     padding: 5rem 2rem 4rem 2rem;
     background: #fefeff;
+
+    @media (max-width: 640px) {
+        padding: 3rem 1.5rem 3rem 1.5rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 4rem 2rem 3.5rem 2rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 7rem 3rem 6rem 3rem;
+    }
 `;
 
 const TimelineOuter = styled.section`
     position: relative;
     padding: 6rem 2rem 0;
+
+    @media (max-width: 640px) {
+        padding: 2rem 0 0;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 4rem 1rem 0;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 8rem 3rem 0;
+    }
 `;
 
 const TimelineInner = styled.div`
     position: relative;
     max-width: 1100px;
     margin: 0 auto;
+
+    @media (min-width: 1920px) {
+        max-width: 1400px;
+    }
 `;
 
 const CenterLine = styled.div`
@@ -315,6 +467,14 @@ const StepsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 3rem;
+
+    @media (max-width: 640px) {
+        gap: 2rem;
+    }
+
+    @media (min-width: 1920px) {
+        gap: 4rem;
+    }
 `;
 
 const StepRow = styled.div<{ delay: number; reverseOnDesktop?: boolean }>`
@@ -329,6 +489,14 @@ const StepRow = styled.div<{ delay: number; reverseOnDesktop?: boolean }>`
     @media (min-width: 1024px) {
         flex-direction: ${({ reverseOnDesktop }) =>
             reverseOnDesktop ? "row-reverse" : "row"};
+    }
+
+    @media (max-width: 640px) {
+        gap: 0;
+    }
+
+    @media (min-width: 1920px) {
+        gap: 4rem;
     }
 `;
 
@@ -353,6 +521,20 @@ const StepNumber = styled.span`
     font-weight: 700;
     color: rgba(61, 90, 254, 0.2);
     letter-spacing: 0.05em;
+
+    @media (max-width: 640px) {
+        font-size: 3rem;
+        margin-bottom: 0.7rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 4rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 5.5rem;
+        margin-bottom: 0.75rem;
+    }
 `;
 
 const StepTitle = styled.h3`
@@ -360,6 +542,20 @@ const StepTitle = styled.h3`
     font-weight: 700;
     margin: 0 0 1rem;
     color: #0f172a;
+
+    @media (max-width: 640px) {
+        font-size: 1.5rem;
+        margin: 1rem 0 0.75rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1.75rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 2.5rem;
+        margin: 0 0 1.25rem;
+    }
 `;
 
 const StepDescription = styled.p`
@@ -368,6 +564,23 @@ const StepDescription = styled.p`
     color: #6b7280;
     max-width: 32rem;
     margin: 0;
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1rem;
+        max-width: 28rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        max-width: 40rem;
+    }
 `;
 
 const IconCircleDesktop = styled.div`
@@ -398,6 +611,16 @@ const IconCircleInner = styled.div`
         height: 40px;
         color: #ffffff;
     }
+
+    @media (min-width: 1920px) {
+        width: 120px;
+        height: 120px;
+
+        .icon {
+            width: 50px;
+            height: 50px;
+        }
+    }
 `;
 
 const IconCirclePulse = styled.div`
@@ -423,6 +646,15 @@ const MobileCard = styled.div`
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     padding: 1.5rem;
     backdrop-filter: blur(12px);
+
+    @media (max-width: 640px) {
+        padding: 1.25rem;
+        border-radius: 20px;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 1.75rem;
+    }
 `;
 
 const MobileIconBox = styled.div`
@@ -441,10 +673,32 @@ const MobileIconBox = styled.div`
         height: 32px;
         color: #ffffff;
     }
+
+    @media (max-width: 640px) {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        margin-bottom: 0.5rem;
+
+        .icon {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        width: 72px;
+        height: 72px;
+
+        .icon {
+            width: 36px;
+            height: 36px;
+        }
+    }
 `;
 
 const SectionTitle = styled.h2`
-    color: ${({ theme }) => theme.colors.text};
+    color: #0a0a0a;
     font-size: 3.5rem;
     font-weight: 700;
     line-height: 1.1;
@@ -454,6 +708,18 @@ const SectionTitle = styled.h2`
     opacity: 0;
     animation: ${fadeSlideUp} 0.8s ease-out forwards;
     animation-delay: 0.1s;
+
+    @media (max-width: 640px) {
+        font-size: 2.5rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 2.8rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 4.5rem;
+    }
 `;
 
 const SectionDescription = styled.p`
@@ -467,6 +733,22 @@ const SectionDescription = styled.p`
     opacity: 0;
     animation: ${fadeSlideUp} 0.8s ease-out forwards;
     animation-delay: 0.25s;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1.1rem;
+        max-width: 650px;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 1.4rem;
+        max-width: 1000px;
+        margin: 0 auto 1.5rem;
+    }
 `;
 
 const CTASection = styled.section`
@@ -475,6 +757,18 @@ const CTASection = styled.section`
     justify-content: center;
     text-align: center;
     background: #fefeff;
+
+    @media (max-width: 640px) {
+        padding: 3rem 1.5rem 4rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 4rem 2rem 5rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 8rem 3rem 10rem;
+    }
 `;
 
 const CTAContainer = styled.div`
@@ -490,19 +784,64 @@ const CTAContainer = styled.div`
     opacity: 0;
     animation: ${fadeScale} 0.8s ease-out forwards;
     animation-delay: 0.3s;
+
+    @media (max-width: 640px) {
+        padding: 2.5rem 1.5rem;
+        border-radius: 24px;
+        max-width: 100%;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 3rem 2rem;
+        max-width: 700px;
+    }
+
+    @media (min-width: 1920px) {
+        max-width: 1100px;
+        padding: 5rem 4rem;
+        border-radius: 40px;
+    }
 `;
 
 const CTATitle = styled.h2`
     font-size: 1.8rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.text};
+    color: #0a0a0a;
     margin-bottom: 1rem;
+
+    @media (max-width: 640px) {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1.65rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
 `;
 
 const CTASubtitle = styled.p`
     font-size: 1.1rem;
-    color: ${({ theme }) => theme.colors.textMuted};
+    color: #666;
     margin-bottom: 2.5rem;
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        font-size: 1rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 1.3rem;
+        margin-bottom: 3rem;
+    }
 `;
 
 const CTAButton = styled(Link)`
@@ -526,6 +865,23 @@ const CTAButton = styled(Link)`
 
     &:active {
         transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+
+        max-width: 300px;
+    }
+
+    @media (min-width: 641px) and (max-width: 1023px) {
+        padding: 1rem 2.5rem;
+        font-size: 1.05rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 1.3rem 3.5rem;
+        font-size: 1.25rem;
     }
 `;
 
