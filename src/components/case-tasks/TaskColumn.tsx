@@ -45,6 +45,22 @@ const Wrapper = styled.div`
     &:hover {
         box-shadow: 0 4px 12px rgba(61, 112, 254, 0.08);
     }
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const ColumnHeader = styled.div`
