@@ -16,6 +16,22 @@ const Card = styled.div`
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
         transform: translateY(-2px);
     }
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const Header = styled.div`
@@ -23,12 +39,23 @@ const Header = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.2rem;
+    gap: 0.75rem;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
 `;
 
 const CaseNumber = styled.h3`
     font-size: 1.3rem;
     font-weight: 700;
     color: #5c5c5d;
+
+    @media (max-width: 640px) {
+        font-size: 1.15rem;
+    }
 `;
 
 const TypeBadge = styled.span<{ $type: string }>`
@@ -36,6 +63,7 @@ const TypeBadge = styled.span<{ $type: string }>`
     border-radius: 999px;
     font-size: 0.875rem;
     font-weight: 500;
+    white-space: nowrap;
 
     background: ${({ $type }) => {
         const t = $type.toLowerCase();
@@ -79,6 +107,18 @@ const Row = styled.div`
     font-size: 0.95rem;
     color: #64748b;
     margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+        font-size: 0.9rem;
+        gap: 0.5rem;
+    }
 `;
 
 type Props = {
@@ -104,7 +144,8 @@ export default function HearingCard({ caseRecord, hearing }: Props) {
                 </Row>
 
                 <Row>
-                    <MapPin /> {caseRecord.court}
+                    <MapPin />
+                    {caseRecord.court}
                     <span
                         style={{
                             marginLeft: "0.75rem",
