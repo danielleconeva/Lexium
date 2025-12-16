@@ -80,4 +80,20 @@ const Row = styled.div`
     > *:nth-child(4) {
         animation-delay: 0.7s;
     }
+
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 2rem auto;
+    }
+
+    @media (min-width: 1920px) {
+        max-width: 1400px;
+        gap: 2rem;
+    }
 `;

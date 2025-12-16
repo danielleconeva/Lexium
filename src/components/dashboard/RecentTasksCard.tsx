@@ -71,6 +71,22 @@ const Card = styled.div`
     border: 1px solid #eef2f6;
     height: fit-content;
     min-height: 392px;
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const HeaderRow = styled.div`
@@ -106,7 +122,7 @@ const TitleWrapper = styled.div`
 `;
 const Title = styled.h3`
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
 `;
 

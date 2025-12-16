@@ -67,6 +67,21 @@ const Card = styled.div`
     box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
     border: 1px solid #eef2f6;
     min-height: 640px;
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const HeaderRow = styled.div`
