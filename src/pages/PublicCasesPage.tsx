@@ -67,6 +67,18 @@ const HeroSection = styled.section`
     position: relative;
     background: #fefeff;
     animation: ${slideInDown} 0.7s ease-out;
+
+    @media (max-width: 640px) {
+        padding: 5.5rem 1.25rem 3rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        padding: 5rem 2rem 3.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        padding: 7rem 2rem 5rem;
+    }
 `;
 
 const HeroContent = styled.div`
@@ -76,6 +88,10 @@ const HeroContent = styled.div`
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+
+    @media (min-width: 1920px) {
+        max-width: 1400px;
+    }
 `;
 
 const HeroTitle = styled.div`
@@ -91,6 +107,18 @@ const TitleLine1 = styled.h1`
     color: #0a0a0a;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        font-size: 2.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 3.6rem;
+    }
 `;
 
 const TitleLine2 = styled.h1`
@@ -103,6 +131,18 @@ const TitleLine2 = styled.h1`
     background-clip: text;
     margin: 0;
     letter-spacing: -0.02em;
+
+    @media (max-width: 640px) {
+        font-size: 2.2rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        font-size: 2.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 3.6rem;
+    }
 `;
 
 const HeroDescription = styled.p`
@@ -113,6 +153,15 @@ const HeroDescription = styled.p`
     text-align: center;
     margin: 0 auto 3rem;
     animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    @media (min-width: 1920px) {
+        font-size: 1.3rem;
+    }
 `;
 
 const SearchBarWrapper = styled.div`
@@ -120,6 +169,10 @@ const SearchBarWrapper = styled.div`
     max-width: 800px;
     box-sizing: border-box;
     animation: ${scaleIn} 0.8s ease-out 0.3s backwards;
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+    }
 `;
 
 const ResultsSection = styled.div`
@@ -128,6 +181,18 @@ const ResultsSection = styled.div`
     margin: 0 auto;
     width: 100%;
     box-sizing: border-box;
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.5rem 3rem 1.5rem;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        padding: 2.5rem 2rem 3.5rem 2rem;
+    }
+
+    @media (min-width: 1920px) {
+        max-width: 1700px;
+    }
 `;
 
 const BrowseHeader = styled.div`
@@ -136,6 +201,12 @@ const BrowseHeader = styled.div`
     align-items: center;
     margin-bottom: 2rem;
     animation: ${slideInUp} 0.7s ease-out 0.4s backwards;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
 `;
 
 const BrowseTitle = styled.div``;
@@ -145,18 +216,29 @@ const BrowseHeading = styled.h2`
     font-weight: 700;
     color: #0a0a0a;
     margin: 0 0 0.5rem 0;
+    @media (max-width: 640px) {
+        margin-bottom: 1rem;
+    }
 `;
 
 const BrowseSubtext = styled.p`
     font-size: 1rem;
     color: #666;
     margin: 0;
+
+    @media (max-width: 640px) {
+        margin-bottom: 1rem;
+    }
 `;
 
 const FilterSection = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+    }
 `;
 
 const FilterLabel = styled.div`
@@ -175,6 +257,10 @@ const FilterIcon = styled(Filter)`
 const FilterButtons = styled.div`
     display: flex;
     gap: 0.75rem;
+
+    @media (max-width: 640px) {
+        flex-wrap: wrap;
+    }
 `;
 
 const FilterButton = styled.button<{ $active?: boolean }>`
@@ -224,6 +310,18 @@ const CasesList = styled.div`
     }
     > *:nth-child(n + 7) {
         animation-delay: 0.8s;
+    }
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 1920px) {
+        grid-template-columns: repeat(4, minmax(380px, 1fr));
     }
 `;
 

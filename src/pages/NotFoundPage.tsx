@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Home, ArrowLeft } from "lucide-react";
-
 const PageWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -22,6 +21,11 @@ const PageWrapper = styled.div`
             transparent 96%
         ),
         #fefeff;
+
+    @media (max-width: 640px) {
+        padding: 1.5rem;
+        min-height: calc(100vh - 4rem);
+    }
 `;
 
 const ContentContainer = styled.div`
@@ -38,6 +42,10 @@ const ContentContainer = styled.div`
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    @media (max-width: 640px) {
+        max-width: 320px;
     }
 `;
 
@@ -69,6 +77,11 @@ const ErrorNumber = styled.h1`
         font-size: 6rem;
         letter-spacing: -4px;
     }
+
+    @media (max-width: 640px) {
+        font-size: 5rem;
+        letter-spacing: -3px;
+    }
 `;
 
 const GlassCard = styled.div`
@@ -94,6 +107,11 @@ const GlassCard = styled.div`
             transform: translateY(0);
         }
     }
+
+    @media (max-width: 640px) {
+        padding: 2rem 1.5rem;
+        border-radius: 1.6rem;
+    }
 `;
 
 const Title = styled.h2`
@@ -106,6 +124,10 @@ const Title = styled.h2`
     @media (max-width: 768px) {
         font-size: 1.8rem;
     }
+
+    @media (max-width: 640px) {
+        font-size: 1.6rem;
+    }
 `;
 
 const Description = styled.p`
@@ -114,6 +136,10 @@ const Description = styled.p`
     line-height: 1.6;
     margin: 0 0 2rem 0;
     opacity: 0.9;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+    }
 `;
 
 const ButtonGroup = styled.div`
@@ -144,6 +170,11 @@ const ButtonGroup = styled.div`
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 `;
 
@@ -195,6 +226,10 @@ const PrimaryButton = styled(Link)`
     &:active {
         transform: translateY(-1px);
     }
+
+    @media (max-width: 640px) {
+        justify-content: center;
+    }
 `;
 
 const SecondaryButton = styled(Link)`
@@ -226,6 +261,10 @@ const SecondaryButton = styled(Link)`
 
     &:active {
         transform: translateY(0);
+    }
+
+    @media (max-width: 640px) {
+        justify-content: center;
     }
 `;
 

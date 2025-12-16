@@ -57,6 +57,10 @@ const PageWrapper = styled.div`
     overflow-x: hidden;
     padding: 3rem 2rem 4rem 2rem;
 
+    @media (max-width: 640px) {
+        padding: 2rem 1.25rem 3rem;
+    }
+
     & > * {
         opacity: 0;
         animation: ${fadeInUp} 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
@@ -95,6 +99,15 @@ const Heading = styled.h3`
     color: #0a0a0a;
     margin: 1rem 0 0.5rem 6.5rem;
     position: relative;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    @media (max-width: 640px) {
+        font-size: 1.7rem;
+    }
 `;
 
 const BackButton = styled.a`
@@ -109,6 +122,11 @@ const BackButton = styled.a`
     transform: translateX(0);
     position: relative;
     overflow: hidden;
+
+    @media (max-width: 1024px) {
+        margin-left: 0;
+        padding-left: 0;
+    }
 
     &::before {
         content: "<-";
@@ -136,6 +154,11 @@ const MiddleRow = styled.div`
     flex-direction: row;
     gap: 2rem;
     justify-content: center;
+
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        align-items: center;
+    }
 
     & > * {
         opacity: 0;

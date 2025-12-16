@@ -51,6 +51,14 @@ const PageWrapper = styled.div`
             transparent 96%
         ),
         #fefeff;
+
+    @media (max-width: 640px) {
+        padding: 1.5rem 1.25rem 1rem;
+    }
+
+    @media (max-width: 1024px) and (min-width: 641px) {
+        align-items: flex-start;
+    }
 `;
 
 const FormSection = styled.div`
@@ -63,12 +71,13 @@ const FormSection = styled.div`
     animation: ${slideInRight} 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94)
         forwards;
     animation-delay: 0.2s;
+
+    @media (max-width: 1024px) {
+        max-width: 100%;
+    }
 `;
 
 const Divider = styled.div`
-    width: 2px;
-    height: 380px;
-
     background: linear-gradient(
         to bottom,
         rgba(0, 0, 0, 0) 0%,
@@ -76,14 +85,22 @@ const Divider = styled.div`
         rgba(92, 93, 95, 0.6) 60%,
         rgba(0, 0, 0, 0) 100%
     );
-
     border-radius: 20px;
     margin: 0 3rem;
 
-    display: none;
+    width: 2px;
+    height: 380px;
+    display: block;
 
-    @media (min-width: 1024px) {
-        display: block;
+    @media (max-width: 1024px) {
+        width: 100%;
+        height: 2px;
+        margin: 2rem 0 3rem 0;
+    }
+
+    @media (max-width: 640px) {
+        width: 100%;
+        height: 2px;
     }
 
     opacity: 0;
@@ -102,7 +119,12 @@ const TextSection = styled.div`
     flex: 1;
 
     @media (max-width: 1024px) {
-        display: none;
+        align-items: center;
+        text-align: center;
+    }
+
+    @media (max-width: 640px) {
+        align-items: center;
     }
 
     & > * {
@@ -130,6 +152,14 @@ const ContentContainer = styled.div`
     max-width: 1600px;
     width: 100%;
 
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
+
     & > *:nth-child(3) {
         opacity: 0;
         transform: translateX(50px);
@@ -147,6 +177,16 @@ const BigTitle = styled.h1`
     margin-top: -2rem;
     line-height: 0.8;
     letter-spacing: 2px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:hover {
+        transform: translateY(-4px);
+    }
+
+    @media (max-width: 640px) {
+        font-size: 2.6rem;
+        margin-top: 0;
+    }
 `;
 
 const SubTitle = styled.h2`
@@ -157,6 +197,16 @@ const SubTitle = styled.h2`
     line-height: 1.2;
     margin-top: -0.4rem;
     margin-bottom: 1rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:hover {
+        transform: translateY(-4px);
+    }
+
+    @media (max-width: 640px) {
+        font-size: 2.4rem;
+        margin-bottom: 2rem;
+    }
 `;
 
 const RightSubtitle = styled.p`
@@ -165,6 +215,11 @@ const RightSubtitle = styled.p`
     line-height: 1.6;
     margin: 0;
     max-width: 500px;
+
+    @media (max-width: 640px) {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
 `;
 
 export default function RegisterPage() {
@@ -185,7 +240,7 @@ export default function RegisterPage() {
                 <Divider />
 
                 <TextSection>
-                    <BigTitle>Set Up </BigTitle>
+                    <BigTitle>Set Up</BigTitle>
                     <SubTitle>Your Account</SubTitle>
 
                     <RightSubtitle>

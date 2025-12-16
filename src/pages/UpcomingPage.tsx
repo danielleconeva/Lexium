@@ -53,18 +53,34 @@ const PageWrapper = styled.div`
     margin: auto;
     padding: 2rem 2rem 6rem;
     animation: ${fadeIn} 0.5s ease-out;
+
+    @media (max-width: 1024px) {
+        padding: 2rem 1.75rem 5rem;
+    }
+
+    @media (max-width: 640px) {
+        padding: 1.5rem 1.25rem 4rem;
+    }
 `;
 
 const PageHeader = styled.div`
     padding: 4rem 2rem 1rem;
     text-align: center;
     animation: ${slideInDown} 0.7s ease-out;
+
+    @media (max-width: 640px) {
+        padding: 3rem 1.25rem 0.75rem;
+    }
 `;
 
 const TitleLine1 = styled.h1`
     font-size: 3.2rem;
     font-weight: 700;
     margin: 0;
+
+    @media (max-width: 640px) {
+        font-size: 2.4rem;
+    }
 `;
 
 const TitleLine2 = styled.h1`
@@ -75,6 +91,10 @@ const TitleLine2 = styled.h1`
     background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
+
+    @media (max-width: 640px) {
+        font-size: 2.4rem;
+    }
 `;
 
 const HeroDescription = styled.p`
@@ -83,6 +103,11 @@ const HeroDescription = styled.p`
     max-width: 800px;
     margin: 2rem auto 0.5rem;
     animation: ${fadeIn} 0.8s ease-out 0.2s backwards;
+
+    @media (max-width: 640px) {
+        font-size: 1.05rem;
+        margin-top: 1.5rem;
+    }
 `;
 
 const TimelineContainer = styled.div`
@@ -121,6 +146,10 @@ const TimelineLine = styled.div`
     width: 1px;
     height: 3rem;
     background: #e0e0e0;
+
+    @media (max-width: 640px) {
+        height: 2rem;
+    }
 `;
 
 const TimelineDot = styled.div`
@@ -164,6 +193,15 @@ const HearingsColumn = styled.div`
     }
     & > *:nth-child(n + 6) {
         animation-delay: 0.35s;
+    }
+
+    @media (max-width: 1024px) {
+        width: 90%;
+    }
+
+    @media (max-width: 640px) {
+        width: 100%;
+        gap: 1.25rem;
     }
 `;
 
