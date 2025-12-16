@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled, { css } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { Scale } from "lucide-react";
+import { Scale, Menu, X } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import ConfirmModal from "./ConfirmModal";
 
@@ -10,24 +10,47 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     async function handleLogout() {
         await logout();
         navigate("/");
         setShowLogoutModal(false);
+        setMobileMenuOpen(false);
+    }
+
+    function closeMobileMenu() {
+        setMobileMenuOpen(false);
     }
 
     return (
         <>
             <NavbarContainer $hasUser={!!user}>
-                <LeftSection $hasUser={!!user}>
-                    <NavLink to="/">Home</NavLink>
+                <MobileMenuButton onClick={() => setMobileMenuOpen((v) => !v)}>
+                    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </MobileMenuButton>
 
-                    {user && <NavLink to="/dashboard">Dashboard</NavLink>}
-                    {user && <NavLink to="/cases">Cases</NavLink>}
+                <LeftSection $hasUser={!!user} $mobileOpen={mobileMenuOpen}>
+                    <NavLink to="/" onClick={closeMobileMenu}>
+                        Home
+                    </NavLink>
+
+                    {user && (
+                        <NavLink to="/dashboard" onClick={closeMobileMenu}>
+                            Dashboard
+                        </NavLink>
+                    )}
+
+                    {user && (
+                        <NavLink to="/cases" onClick={closeMobileMenu}>
+                            Cases
+                        </NavLink>
+                    )}
 
                     {!user && (
-                        <NavLink to="/public-cases">Public Cases</NavLink>
+                        <NavLink to="/public-cases" onClick={closeMobileMenu}>
+                            Public Cases
+                        </NavLink>
                     )}
                 </LeftSection>
 
@@ -35,11 +58,19 @@ export default function Navbar() {
                     <Scale size={26} />
                 </CenterCircle>
 
-                <RightSection $hasUser={!!user}>
+                <RightSection $hasUser={!!user} $mobileOpen={mobileMenuOpen}>
                     {user ? (
                         <>
-                            <NavLink to="/public-cases">Public Cases</NavLink>
-                            <NavLink to="/upcoming">Upcoming</NavLink>
+                            <NavLink
+                                to="/public-cases"
+                                onClick={closeMobileMenu}
+                            >
+                                Public Cases
+                            </NavLink>
+
+                            <NavLink to="/upcoming" onClick={closeMobileMenu}>
+                                Upcoming
+                            </NavLink>
 
                             <NavButton
                                 type="button"
@@ -51,8 +82,13 @@ export default function Navbar() {
                         </>
                     ) : (
                         <>
-                            <NavLink to="/login">Log In</NavLink>
-                            <NavLink to="/register">Sign Up</NavLink>
+                            <NavLink to="/login" onClick={closeMobileMenu}>
+                                Log In
+                            </NavLink>
+
+                            <NavLink to="/register" onClick={closeMobileMenu}>
+                                Sign Up
+                            </NavLink>
                         </>
                     )}
                 </RightSection>
@@ -89,17 +125,49 @@ const NavbarContainer = styled.nav<{ $hasUser: boolean }>`
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
 
     margin: 0 auto;
-
     max-width: ${({ $hasUser }) => ($hasUser ? "890px" : "520px")};
-
     transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
         box-shadow 0.3s ease;
+    @media (min-width: 850px) and (max-width: 1026px) {
+        max-width: ${({ $hasUser }) => ($hasUser ? "890px" : "520px")};
+    }
+    @media (max-width: 640px) {
+        top: 2rem;
+        height: 60px;
+        padding: 0 1rem;
+        margin: 0 2rem;
+        gap: 0;
+        max-width: calc(100% - 2rem);
+        border-radius: 30px;
+        justify-content: space-between;
+    }
 `;
 
-const LeftSection = styled.div<{ $hasUser: boolean }>`
+const MobileMenuButton = styled.button`
+    all: unset;
+
+    display: none;
+    cursor: pointer;
+
+    @media (max-width: 640px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+        stroke-width: 2;
+        overflow: visible;
+        display: block;
+    }
+`;
+
+const LeftSection = styled.div<{ $hasUser: boolean; $mobileOpen: boolean }>`
     display: flex;
     align-items: center;
-
     gap: 3.4rem;
     margin-left: 2rem;
 
@@ -109,20 +177,61 @@ const LeftSection = styled.div<{ $hasUser: boolean }>`
             gap: 2.4rem;
             margin-left: 0.2rem;
         `}
+
+    @media (max-width: 640px) {
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.98);
+        margin: 0 1rem;
+        border-radius: 20px;
+        padding: 1.3rem;
+
+        transform: ${({ $mobileOpen }) =>
+            $mobileOpen ? "translateY(0)" : "translateY(-12px)"};
+        opacity: ${({ $mobileOpen }) => ($mobileOpen ? 1 : 0)};
+        pointer-events: ${({ $mobileOpen }) => ($mobileOpen ? "auto" : "none")};
+
+        transition: all 0.25s ease;
+        z-index: 40;
+        gap: 1rem;
+    }
 `;
 
-const RightSection = styled.div<{ $hasUser: boolean }>`
+const RightSection = styled.div<{ $hasUser: boolean; $mobileOpen: boolean }>`
     display: flex;
     align-items: center;
-
     gap: 3rem;
-
     ${({ $hasUser }) =>
         !$hasUser &&
         css`
             gap: 2.8rem;
             margin-right: 0.4rem;
         `}
+    @media (max-width: 640px) {
+        position: fixed;
+        top: ${({ $hasUser }) => ($hasUser ? "260px" : "205px")};
+        left: 0;
+        right: 0;
+        gap: 1rem;
+
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.98);
+        margin: 0 1rem;
+        border-radius: 20px;
+        padding: 1rem;
+
+        transform: ${({ $mobileOpen }) =>
+            $mobileOpen ? "translateY(0)" : "translateY(-12px)"};
+        opacity: ${({ $mobileOpen }) => ($mobileOpen ? 1 : 0)};
+        pointer-events: ${({ $mobileOpen }) => ($mobileOpen ? "auto" : "none")};
+
+        transition: all 0.25s ease;
+        z-index: 30;
+    }
 `;
 
 const CenterCircle = styled.div<{ $hasUser: boolean }>`
@@ -130,11 +239,11 @@ const CenterCircle = styled.div<{ $hasUser: boolean }>`
     height: 55px;
     border-radius: 50%;
     flex-shrink: 0;
-
+    background: linear-gradient(135deg, #3d70fe, #5c7cff);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-
     margin: 0 1rem 0 2.4rem;
 
     ${({ $hasUser }) =>
@@ -163,13 +272,17 @@ const CenterCircle = styled.div<{ $hasUser: boolean }>`
     svg {
         stroke-width: 2.2;
     }
+
+    @media (max-width: 640px) {
+        width: 45px;
+        height: 45px;
+    }
 `;
 
 const navItemStyles = css`
     text-decoration: none;
     color: #1a1a1a;
     font-weight: 400;
-
     position: relative;
     padding: 8px 0;
 
@@ -199,6 +312,7 @@ const navItemStyles = css`
             transform: translateX(-50%) scaleX(1);
         }
     }
+    cursor: pointer;
 `;
 
 const NavLink = styled(Link)`
