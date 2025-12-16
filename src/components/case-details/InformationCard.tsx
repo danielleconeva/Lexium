@@ -71,6 +71,22 @@ const Card = styled.div`
     padding: 2rem;
     box-shadow: 0 8px 18px rgba(17, 24, 39, 0.06);
     border: 1px solid #eef2f6;
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const HeaderRow = styled.div`
@@ -123,6 +139,10 @@ const InfoBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+
+    @media (max-width: 640px) {
+        padding: 1.2em 1.2rem;
+    }
 `;
 
 const FullWidthBox = styled(InfoBox)`

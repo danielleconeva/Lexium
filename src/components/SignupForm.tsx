@@ -16,6 +16,15 @@ const FormWrapper = styled.form`
     padding: 4rem 0 2rem 12rem;
     margin: 1rem auto;
 
+    @media (max-width: 640px) {
+        padding: 2rem 0;
+        max-width: 100%;
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        padding: 3rem 0 2rem 4rem;
+    }
+
     input {
         background: #f5f5f5;
         border: 1px solid #ddd;
@@ -46,6 +55,11 @@ const FormWrapper = styled.form`
         text-decoration: none;
         position: relative;
         overflow: hidden;
+
+        @media (max-width: 640px) {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+        }
 
         &::before {
             content: "";
@@ -115,6 +129,11 @@ const InputGroup = styled.div`
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08),
             0 2px 8px rgba(0, 0, 0, 0.04),
             inset 0 1px 2px rgba(255, 255, 255, 0.5);
+
+        @media (max-width: 640px) {
+            padding: 0.75rem 2.3rem;
+            font-size: 0.95rem;
+        }
 
         &:hover {
             background: rgba(255, 255, 255, 0.35);
@@ -197,6 +216,10 @@ const ValidationError = styled.span`
             transform: translateY(0);
         }
     }
+
+    @media (max-width: 640px) {
+        font-size: 0.8rem;
+    }
 `;
 
 const SignupLink = styled(Link)`
@@ -242,6 +265,11 @@ const IconCircle = styled.div`
     position: relative;
     overflow: hidden;
 
+    @media (max-width: 640px) {
+        width: 72px;
+        height: 72px;
+    }
+
     svg {
         width: 40px;
         height: 40px;
@@ -249,6 +277,11 @@ const IconCircle = styled.div`
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         z-index: 1;
+
+        @media (max-width: 640px) {
+            width: 32px;
+            height: 32px;
+        }
     }
 `;
 
@@ -259,6 +292,10 @@ const BottomText = styled.p`
 
     &:hover {
         color: ${({ theme }) => theme.colors.text || "#333"};
+    }
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
     }
 `;
 

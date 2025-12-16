@@ -23,6 +23,22 @@ const CardWrapper = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     box-shadow: 0 8px 17px rgba(15, 23, 42, 0.06);
+    @media (max-width: 1024px) {
+        width: 100%;
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.5rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const CardLeft = styled.div`
@@ -38,12 +54,26 @@ const CardRight = styled.div`
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        row-gap: 0.75rem;
+        flex-direction: column;
+    }
+
+    @media (max-width: 640px) {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
 `;
 
 const BadgeRow = styled.div`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    flex-wrap: wrap;
 `;
 
 const StatusBadge = styled.span<{ $status: string }>`
@@ -151,6 +181,7 @@ const VisibilityBadge = styled.span<{ $visibility: boolean }>`
 const CaseNumberRow = styled.div`
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 `;
 
 const CaseNumberAndYear = styled.h3`
@@ -160,6 +191,10 @@ const CaseNumberAndYear = styled.h3`
     margin: 0.25rem 0 0.4rem 0;
     letter-spacing: -0.03rem;
     line-height: 1.2;
+
+    @media (max-width: 640px) {
+        font-size: 1.7rem;
+    }
 `;
 
 const StarIcon = styled(Star)<{ $isStarred: boolean }>`
@@ -167,15 +202,16 @@ const StarIcon = styled(Star)<{ $isStarred: boolean }>`
     height: 1.8rem;
     margin-left: 0.8rem;
     margin-bottom: 0.15rem;
+
     ${({ $isStarred }) =>
         $isStarred
             ? `
-          fill: #3b82f6;
-    stroke: none;
-    `
+                fill: #3b82f6;
+                stroke: none;
+            `
             : `
-        color: #3b82f6;
-    `}
+                color: #3b82f6;
+            `}
 `;
 
 const ClientInfo = styled.div`
@@ -210,18 +246,14 @@ const EditBtn = styled.button`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-
     background: linear-gradient(135deg, #3d70fe 0%, #667eea 100%);
     color: white;
-
     padding: 0.85rem 1.9rem;
     border-radius: 999px;
     border: none;
     cursor: pointer;
-
     font-size: 0.9rem;
     font-weight: 500;
-
     box-shadow: 0 8px 24px rgba(37, 99, 255, 0.35);
     transition: 0.25s ease;
 
@@ -246,18 +278,14 @@ const ArchiveBtn = styled.button`
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-
     background: white;
     color: #1e293b;
-
     padding: 0.85rem 1.9rem;
     border-radius: 999px;
     border: 1px solid #d8e2ff;
     cursor: pointer;
-
     font-size: 0.9rem;
     font-weight: 500;
-
     transition: 0.25s ease;
 
     svg {
@@ -280,14 +308,11 @@ const DeleteBtn = styled.button`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     background: white;
-
     padding: 0.85rem 1.4rem;
     border-radius: 999px;
     border: 1px solid #eae9fa;
     cursor: pointer;
-
     transition: 0.25s ease;
 
     svg {
@@ -324,6 +349,7 @@ export default function IntroductionCard({
             )
             .join("-");
     }
+
     return (
         <CardWrapper>
             <CardLeft>
@@ -333,6 +359,7 @@ export default function IntroductionCard({
                     </CaseNumberAndYear>
                     <StarIcon $isStarred={caseData.isStarred} />
                 </CaseNumberRow>
+
                 <BadgeRow>
                     <StatusBadge $status={caseData.status}>
                         {formatType(caseData.status)}
@@ -361,6 +388,7 @@ export default function IntroductionCard({
                     </ClientInfo>
                 )}
             </CardLeft>
+
             <CardRight>
                 <EditBtn onClick={() => onEdit(caseData.id)}>
                     <Pencil /> Edit Case
