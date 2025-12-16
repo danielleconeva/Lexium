@@ -47,7 +47,6 @@ export default function CaseIdentificationCard({
         </CardContainer>
     );
 }
-
 const CardContainer = styled.div`
     background: #ffffff;
     border-radius: 1.2rem;
@@ -57,6 +56,21 @@ const CardContainer = styled.div`
     border: 1px solid #eef2f6;
     width: 925px;
     margin: 0 auto;
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const CardHeader = styled.div`
@@ -74,6 +88,11 @@ const IconWrapper = styled.div`
     place-items: center;
     border-radius: 10px;
     color: #3b82f6;
+
+    @media (max-width: 640px) {
+        width: 44px;
+        height: 44px;
+    }
 `;
 
 const CardTitle = styled.h3`
@@ -81,12 +100,21 @@ const CardTitle = styled.h3`
     font-size: 1.2rem;
     font-weight: 600;
     color: #0f172a;
+
+    @media (max-width: 640px) {
+        font-size: 1.1rem;
+    }
 `;
 
 const FormGrid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
 `;
 
 const FormField = styled.div`
@@ -99,6 +127,10 @@ const Label = styled.label`
     font-size: 1rem;
     font-weight: 600;
     color: #4c4e4e;
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+    }
 `;
 
 const Input = styled.input`
@@ -109,6 +141,7 @@ const Input = styled.input`
     background: #f9fafb;
     font-size: 0.95rem;
     color: #0f172a;
+    width: 100%;
     max-width: 340px;
 
     &:focus {
@@ -116,5 +149,14 @@ const Input = styled.input`
         border-color: #93c5fd;
         background: #ffffff;
         box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.25);
+    }
+
+    @media (max-width: 1024px) {
+        width: 80%;
+    }
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+        padding: 0.85rem 1rem;
     }
 `;

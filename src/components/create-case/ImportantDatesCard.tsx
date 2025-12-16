@@ -122,6 +122,22 @@ const CardContainer = styled.div`
     border: 1px solid #eef2f6;
     width: 925px;
     margin: 0 auto;
+
+    @media (max-width: 1024px) {
+        max-width: 550px;
+        padding: 2rem 2rem;
+    }
+
+    @media (max-width: 640px) {
+        max-width: 300px;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.7rem;
+    }
+
+    @media (min-width: 1920px) {
+        width: 1200px;
+    }
 `;
 
 const CardHeader = styled.div`
@@ -139,6 +155,11 @@ const IconWrapper = styled.div`
     place-items: center;
     border-radius: 10px;
     color: #3b82f6;
+
+    @media (max-width: 640px) {
+        width: 44px;
+        height: 44px;
+    }
 `;
 
 const CardTitle = styled.h3`
@@ -152,6 +173,11 @@ const FormGrid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
 `;
 
 const FormField = styled.div`
@@ -181,6 +207,15 @@ const Input = styled.input`
         border-color: #93c5fd;
         background: #ffffff;
         box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.25);
+    }
+
+    @media (max-width: 1024px) {
+        width: 80%;
+    }
+
+    @media (max-width: 640px) {
+        font-size: 0.95rem;
+        padding: 0.85rem 1rem;
     }
 `;
 
@@ -224,6 +259,12 @@ const AddButton = styled.button`
 
     &:active {
         transform: translateY(-1px);
+    }
+
+    @media (max-width: 1024px) {
+        width: 150px;
+        margin-right: 2rem;
+        font-size: 0.7rem;
     }
 `;
 
